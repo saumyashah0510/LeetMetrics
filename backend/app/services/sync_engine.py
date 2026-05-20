@@ -93,8 +93,6 @@ class SyncEngine:
             for t in topics:
                 if t in tag_mapping:
                     patterns_to_assign.append(tag_mapping[t])
-                    # Pick the first matching macro tag for generic mapping
-                    break 
                     
         if not patterns_to_assign:
             return

@@ -3,6 +3,7 @@ import os
 import json
 import httpx
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert
 from app.core.database import AsyncSessionLocal
 from app.models.models import Problem, DSACurriculum, ProblemCurriculumMapping
 
@@ -33,7 +34,7 @@ async def fetch_all_problems():
     
     limit = 100
     skip = 0
-    total = 100 # initial placeholder
+    total = 100 
     problems = []
     
     headers = {
@@ -79,31 +80,44 @@ async def run_pipeline():
         tag_mapping = json.load(f)
         
     async with AsyncSessionLocal() as db:
-        # Pre-fetch curriculums
         result = await db.execute(select(DSACurriculum))
         curriculums = result.scalars().all()
         curr_map = {c.sub_pattern: c.id for c in curriculums}
         
-        inserted_count = 0
-        mapped_count = 0
+        # Clear old mappings to recreate them fresh
+        print("Clearing old mappings...", flush=True)
+        from sqlalchemy import text
+        await db.execute(text("TRUNCATE TABLE problem_curriculum_mapping CASCADE;"))
+        await db.commit()
         
+        problems_to_insert = []
+        for q in problems_data:
+            problems_to_insert.append({
+                "url_name": q["titleSlug"],
+                "frontend_id": int(q["frontendQuestionId"]),
+                "title": q["title"],
+                "difficulty": q["difficulty"],
+                "ac_rate": q.get("acRate"),
+                "leetcode_topics": [t["name"] for t in q.get("topicTags", [])]
+            })
+            
+        print("Bulk inserting problems...", flush=True)
+        if problems_to_insert:
+            stmt = insert(Problem).values(problems_to_insert)
+            stmt = stmt.on_conflict_do_update(
+                index_elements=['url_name'],
+                set_={
+                    'ac_rate': stmt.excluded.ac_rate,
+                    'difficulty': stmt.excluded.difficulty
+                }
+            )
+            await db.execute(stmt)
+            
+        mappings_to_insert = []
         for q in problems_data:
             title_slug = q["titleSlug"]
-            
-            # Use merge to upsert the problem
             topics = [t["name"] for t in q.get("topicTags", [])]
-            prob = Problem(
-                url_name=title_slug,
-                frontend_id=int(q["frontendQuestionId"]),
-                title=q["title"],
-                difficulty=q["difficulty"],
-                ac_rate=q.get("acRate"),
-                leetcode_topics=topics
-            )
-            await db.merge(prob)
-            inserted_count += 1
             
-            # Mapping Logic
             patterns_to_assign = []
             is_manual = False
             
@@ -118,20 +132,25 @@ async def run_pipeline():
                 for t in topics:
                     if t in tag_mapping:
                         patterns_to_assign.append(tag_mapping[t])
-                        break
                         
             for pattern in set(patterns_to_assign):
                 if pattern in curr_map:
-                    mapping = ProblemCurriculumMapping(
-                        problem_url_name=title_slug,
-                        curriculum_id=curr_map[pattern],
-                        is_manual_override=is_manual
-                    )
-                    await db.merge(mapping)
-                    mapped_count += 1
+                    mappings_to_insert.append({
+                        "problem_url_name": title_slug,
+                        "curriculum_id": curr_map[pattern],
+                        "is_manual_override": is_manual
+                    })
                     
+        print("Bulk inserting mappings...", flush=True)
+        if mappings_to_insert:
+            stmt2 = insert(ProblemCurriculumMapping).values(mappings_to_insert)
+            stmt2 = stmt2.on_conflict_do_nothing(
+                index_elements=['problem_url_name', 'curriculum_id']
+            )
+            await db.execute(stmt2)
+            
         await db.commit()
-        print(f"Success! Upserted {inserted_count} problems and mapped {mapped_count} patterns.")
+        print(f"Success! Upserted {len(problems_to_insert)} problems and mapped {len(mappings_to_insert)} patterns.", flush=True)
 
 if __name__ == "__main__":
     asyncio.run(run_pipeline())
