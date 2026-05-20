@@ -149,7 +149,7 @@ export default function LandingPage() {
       localStorage.setItem("lm_username", u);
 
       const POLL_INTERVAL = 3000;
-      const MAX_POLLS = 40; // 40 × 3s = 2 min timeout
+      const MAX_POLLS = 150; // 150 × 3s = 7.5 min timeout
       let polls = 0;
 
       await new Promise((resolve) => {
@@ -160,14 +160,15 @@ export default function LandingPage() {
             const { status, submissions_count } = res.data;
             setSyncCount(submissions_count || 0);
 
-            if (status === "success" || polls >= MAX_POLLS) {
+            if (status === "success") {
               clearInterval(pollRef.current);
               resolve();
-            }
-            // if status === "failed", also stop
-            if (status === "failed") {
+            } else if (status === "failed") {
               clearInterval(pollRef.current);
-              resolve();
+              reject(new Error("Background sync failed during data processing. Please try again."));
+            } else if (polls >= MAX_POLLS) {
+              clearInterval(pollRef.current);
+              reject(new Error("Sync timed out."));
             }
           } catch {
             // poll error — just keep trying

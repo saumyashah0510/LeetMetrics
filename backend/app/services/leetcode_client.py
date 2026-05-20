@@ -41,9 +41,11 @@ class LeetCodeClient:
         response.raise_for_status()
         return response.json()
 
-    async def get_submissions(self, offset: int, limit: int = 20) -> Dict[str, Any]:
+    async def get_submissions(self, offset: int, limit: int = 20, last_key: str = "") -> Dict[str, Any]:
         """Fetch a paginated list of submissions from the internal REST API."""
         url = f"{self.BASE_URL}/api/submissions/?offset={offset}&limit={limit}"
+        if last_key:
+            url += f"&lastkey={last_key}"
         response = await self.client.get(url)
         response.raise_for_status()
         return response.json()
@@ -68,6 +70,35 @@ class LeetCodeClient:
         response = await self.client.post(
             self.GRAPHQL_URL, 
             json={"query": query, "variables": {"titleSlug": title_slug}}
+        )
+        response.raise_for_status()
+        return response.json()
+
+    async def get_contest_history(self, username: str) -> Dict[str, Any]:
+        """Fetch the user's contest history and rating via GraphQL."""
+        query = """
+        query userContestRankingInfo($username: String!) {
+          userContestRanking(username: $username) {
+            rating
+            globalRanking
+          }
+          userContestRankingHistory(username: $username) {
+            attended
+            trendDirection
+            problemsSolved
+            totalProblems
+            finishTimeInSeconds
+            rating
+            contest {
+              title
+              startTime
+            }
+          }
+        }
+        """
+        response = await self.client.post(
+            self.GRAPHQL_URL,
+            json={"query": query, "variables": {"username": username}}
         )
         response.raise_for_status()
         return response.json()

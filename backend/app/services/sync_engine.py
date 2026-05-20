@@ -123,13 +123,17 @@ class SyncEngine:
             offset = 0
             limit = 20
             has_next = True
+            last_key = ""
             submissions_added = 0
             
             stop_timestamp = self.user.last_sync_timestamp or 0
             latest_timestamp_fetched = stop_timestamp
             
+            print(f"Starting sync. stop_timestamp={stop_timestamp}")
+            
             while has_next:
-                data = await self.lc_client.get_submissions(offset, limit)
+                print(f"Fetching offset={offset}, last_key={last_key}...")
+                data = await self.lc_client.get_submissions(offset, limit, last_key)
                 submissions = data.get("submissions_dump", [])
                 
                 if not submissions:
@@ -138,7 +142,8 @@ class SyncEngine:
                 for sub in submissions:
                     sub_timestamp = int(sub.get("timestamp", 0))
                     
-                    if sub_timestamp <= stop_timestamp:
+                    # Stop if we hit a submission we've already synced
+                    if stop_timestamp > 0 and sub_timestamp <= stop_timestamp:
                         has_next = False
                         break
                         
@@ -180,9 +185,19 @@ class SyncEngine:
                     await self.db.merge(submission)
                     submissions_added += 1
                 
+                # Commit after every page so the frontend can see the count increase in real-time
+                await self.db.commit()
+                
                 if has_next:
-                    offset += limit
-                    await asyncio.sleep(random.uniform(2.5, 5.0)) 
+                    api_has_next = data.get("has_next", True)
+                    last_key = data.get("last_key", "")
+                    
+                    if not api_has_next:
+                        print("API returned has_next=False. Stopping pagination.")
+                        has_next = False
+                    else:
+                        offset += limit
+                        await asyncio.sleep(random.uniform(2.5, 5.0))
                     
             self.sync_log.status = 'success'
             self.sync_log.completed_at = func.now()
@@ -190,6 +205,64 @@ class SyncEngine:
             self.user.last_sync_timestamp = latest_timestamp_fetched
             self.user.last_synced_at = func.now()
             
+            # Commit the submissions and user update BEFORE contests
+            await self.db.commit()
+            
+            # --- CONTEST SYNC ---
+            try:
+                print(f"Fetching contest history for {self.username}...")
+                contest_data = await self.lc_client.get_contest_history(self.username)
+                
+                ranking_info = contest_data.get("data", {}).get("userContestRanking", {})
+                if ranking_info:
+                    self.user.rating = ranking_info.get("rating")
+                    self.user.ranking = ranking_info.get("globalRanking")
+                
+                history = contest_data.get("data", {}).get("userContestRankingHistory", [])
+                if history:
+                    from app.models.models import Contest, ContestHistory
+                    for h in history:
+                        if not h.get("attended"):
+                            continue
+                            
+                        contest_info = h.get("contest", {})
+                        title = contest_info.get("title")
+                        start_time_ts = contest_info.get("startTime")
+                        if not title or not start_time_ts:
+                            continue
+                            
+                        # 1. Upsert Contest
+                        res = await self.db.execute(select(Contest).where(Contest.title == title))
+                        contest = res.scalars().first()
+                        if not contest:
+                            contest = Contest(
+                                title=title,
+                                start_time=datetime.fromtimestamp(start_time_ts)
+                            )
+                            self.db.add(contest)
+                            await self.db.flush()
+                            
+                        # 2. Upsert ContestHistory
+                        res = await self.db.execute(
+                            select(ContestHistory)
+                            .where(ContestHistory.user_id == self.user.id)
+                            .where(ContestHistory.contest_id == contest.id)
+                        )
+                        ch = res.scalars().first()
+                        if not ch:
+                            ch = ContestHistory(
+                                user_id=self.user.id,
+                                contest_id=contest.id,
+                                rating=h.get("rating"),
+                                ranking=0, # GraphQL does not provide ranking directly in history
+                                problems_solved=h.get("problemsSolved"),
+                                finish_time_seconds=h.get("finishTimeInSeconds")
+                            )
+                            self.db.add(ch)
+            except Exception as e:
+                print(f"Failed to fetch contest history: {e}")
+                await self.db.rollback() # Rollback the contest transaction to prevent dirty session
+                
             await self.db.commit()
             
             try:
@@ -202,10 +275,12 @@ class SyncEngine:
             return submissions_added
             
         except Exception as e:
+            await self.db.rollback() # VERY IMPORTANT to rollback failed transactions
             if self.sync_log:
                 self.sync_log.status = 'failed'
                 self.sync_log.error_message = str(e)
                 self.sync_log.completed_at = func.now()
+                self.db.add(self.sync_log)
                 await self.db.commit()
             raise e
         finally:
