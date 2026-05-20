@@ -92,8 +92,12 @@ CREATE TABLE mastery_scores (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     curriculum_id INTEGER REFERENCES dsa_curriculum(id) ON DELETE CASCADE,
+    volume_score FLOAT NOT NULL,
+    difficulty_score FLOAT NOT NULL,
+    recency_multiplier FLOAT NOT NULL,
     score FLOAT NOT NULL,
-    computed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    computed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE (user_id, curriculum_id)
 );
 
 -- 8. Contests Table

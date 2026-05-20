@@ -191,6 +191,14 @@ class SyncEngine:
             self.user.last_synced_at = func.now()
             
             await self.db.commit()
+            
+            try:
+                from app.services.analytics_engine import AnalyticsEngine
+                print(f"Triggering analytics computation for user {self.user.id}...")
+                await AnalyticsEngine.compute_mastery_for_user(str(self.user.id))
+            except Exception as e:
+                print(f"Warning: Analytics engine computation failed: {e}")
+                
             return submissions_added
             
         except Exception as e:
