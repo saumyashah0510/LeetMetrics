@@ -77,33 +77,40 @@ class SyncEngine:
         except Exception:
             return # Skip if JSONs don't exist yet
             
-        pattern_to_assign = None
+        patterns_to_assign = []
         is_manual = False
         
         # Layer 2: Explicit Override Check
         if problem.url_name in overrides:
-            pattern_to_assign = overrides[problem.url_name]
+            val = overrides[problem.url_name]
+            if isinstance(val, list):
+                patterns_to_assign.extend(val)
+            elif isinstance(val, str):
+                patterns_to_assign.append(val)
             is_manual = True
         else:
             # Layer 1: Generic Tag Mapping Fallback
             for t in topics:
                 if t in tag_mapping:
-                    pattern_to_assign = tag_mapping[t]
+                    patterns_to_assign.append(tag_mapping[t])
+                    # Pick the first matching macro tag for generic mapping
                     break 
                     
-        if not pattern_to_assign:
+        if not patterns_to_assign:
             return
             
-        result = await self.db.execute(select(DSACurriculum).where(DSACurriculum.sub_pattern == pattern_to_assign))
-        curr = result.scalars().first()
-        
-        if curr:
-            mapping = ProblemCurriculumMapping(
-                problem_url_name=problem.url_name,
-                curriculum_id=curr.id,
-                is_manual_override=is_manual
-            )
-            self.db.add(mapping)
+        for pattern in set(patterns_to_assign):
+            result = await self.db.execute(select(DSACurriculum).where(DSACurriculum.sub_pattern == pattern))
+            curr = result.scalars().first()
+            
+            if curr:
+                mapping = ProblemCurriculumMapping(
+                    problem_url_name=problem.url_name,
+                    curriculum_id=curr.id,
+                    is_manual_override=is_manual
+                )
+                # Use merge to avoid duplicates if mapping already exists
+                await self.db.merge(mapping)
 
     async def run_sync(self):
         """The core ingestion loop."""
