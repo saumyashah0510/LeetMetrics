@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import func
 import httpx
 from datetime import datetime
+import random
 
 from app.models.models import SyncLog, Submission, Problem, User
 from app.services.leetcode_client import LeetCodeClient
@@ -76,8 +77,10 @@ class SyncEngine:
                 
                 if has_next:
                     offset += limit
-                    # CRITICAL: 1.5 second rate limit to prevent LeetCode Cloudflare ban
-                    await asyncio.sleep(1.5) 
+                    # CRITICAL: Cloudflare will block us if we ping exactly every 1.5s
+                    # We add "jitter" (a random delay between 2.5 and 5.0 seconds) to look human
+                    jitter_delay = random.uniform(2.5, 5.0)
+                    await asyncio.sleep(jitter_delay) 
                     
             # Sync completed successfully
             self.sync_log.status = 'success'
