@@ -1,206 +1,1333 @@
 {
-  "two-sum": [
-    "Hash Table / Dictionary",
-    "Opposite Ends (Two Sum, Container)"
+  "01-matrix": [
+    "Multi-source BFS"
   ],
-  "trapping-rain-water": [
-    "Monotonic Stack",
-    "Opposite Ends (Two Sum, Container)"
-  ],
-  "container-with-most-water": [
-    "Opposite Ends (Two Sum, Container)"
-  ],
-  "remove-duplicates-from-sorted-array": [
-    "Same Direction (Remove Duplicates)"
+  "132-pattern": [
+    "Stack Fundamentals"
   ],
   "3sum": [
     "Three Pointers"
   ],
-  "linked-list-cycle": [
-    "Fast & Slow Pointers (Tortoise & Hare)",
-    "Cycle Detection"
+  "4sum": [
+    "Opposite Ends (Two Sum, Container)"
   ],
-  "maximum-subarray": [
-    "Kadane's Algorithm (Max Subarray)",
+  "accounts-merge": [
+    "DFS on Graphs"
+  ],
+  "add-binary": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "add-to-array-form-of-integer": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "add-two-numbers": [
+    "Singly Linked List Fundamentals"
+  ],
+  "alien-dictionary": [
+    "Topological Sort (Kahn's, DFS)"
+  ],
+  "all-possible-full-binary-trees": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "arranging-coins": [
+    "Standard Binary Search"
+  ],
+  "array-with-elements-not-equal-to-average-of-neighbors": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "as-far-from-land-as-possible": [
+    "DFS on Graphs"
+  ],
+  "asteroid-collision": [
+    "Stack Fundamentals"
+  ],
+  "balanced-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "baseball-game": [
+    "Stack Fundamentals"
+  ],
+  "best-team-with-no-conflicts": [
     "1D DP (Fibonacci, Climbing Stairs, House Robber)"
   ],
-  "longest-substring-without-repeating-characters": [
-    "Variable Size Window",
+  "best-time-to-buy-and-sell-stock": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "best-time-to-buy-and-sell-stock-ii": [
+    "DP with States (Stock Buy/Sell, Cooldown)",
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "best-time-to-buy-and-sell-stock-iii": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "best-time-to-buy-and-sell-stock-iv": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "best-time-to-buy-and-sell-stock-with-cooldown": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "best-time-to-buy-and-sell-stock-with-transaction-fee": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "binary-search": [
+    "Standard Binary Search"
+  ],
+  "binary-search-tree-iterator": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "binary-tree-inorder-traversal": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "binary-tree-level-order-traversal": [
+    "BFS / Level Order Traversal"
+  ],
+  "binary-tree-maximum-path-sum": [
+    "DP on Trees"
+  ],
+  "binary-tree-postorder-traversal": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "binary-tree-preorder-traversal": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "binary-tree-right-side-view": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "binary-tree-zigzag-level-order-traversal": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "boats-to-save-people": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "brick-wall": [
     "Hash Table / Dictionary"
   ],
-  "sliding-window-maximum": [
-    "Monotonic Deque / Sliding Window Maximum",
-    "Fixed Size Window"
+  "burst-balloons": [
+    "Interval DP"
   ],
-  "lru-cache": [
-    "LRU / LFU Cache Design",
-    "Doubly Linked List"
+  "can-place-flowers": [
+    "Hash Table / Dictionary"
   ],
-  "search-in-rotated-sorted-array": [
-    "Modified Binary Search (Rotated, Matrix)"
+  "candy": [
+    "Greedy Choice (Jump Game, Gas Station)"
   ],
-  "koko-eating-bananas": [
-    "Binary Search on Answer / Capacity"
+  "capacity-to-ship-packages-within-d-days": [
+    "Standard Binary Search"
   ],
-  "word-search": [
-    "Word Search / Path Backtracking",
-    "Matrix / Grid Traversal (Islands)"
+  "car-fleet": [
+    "Monotonic Stack"
+  ],
+  "car-pooling": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "cheapest-flights-within-k-stops": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "check-completeness-of-a-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "check-if-a-string-contains-all-binary-codes-of-size-k": [
+    "Hash Table / Dictionary"
+  ],
+  "check-if-move-is-legal": [
+    "DFS on Graphs"
+  ],
+  "check-if-there-is-a-valid-partition-for-the-array": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "climbing-stairs": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "clone-graph": [
+    "DFS on Graphs",
+    "BFS on Graphs"
+  ],
+  "coin-change": [
+    "Unbounded Knapsack"
+  ],
+  "coin-change-ii": [
+    "Unbounded Knapsack"
+  ],
+  "combination-sum": [
+    "Combinations & Combination Sum"
+  ],
+  "combination-sum-ii": [
+    "Combinations & Combination Sum"
+  ],
+  "combination-sum-iv": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "combinations": [
+    "Combinations & Combination Sum"
+  ],
+  "concatenated-words": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "concatenation-of-array": [
+    "Hash Table / Dictionary"
+  ],
+  "construct-binary-tree-from-inorder-and-postorder-traversal": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "construct-binary-tree-from-preorder-and-inorder-traversal": [
+    "Tree Construction & Serialization"
+  ],
+  "construct-quad-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "construct-string-from-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "container-with-most-water": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "contains-duplicate": [
+    "Hash Table / Dictionary"
+  ],
+  "contains-duplicate-ii": [
+    "Variable Size Window"
+  ],
+  "continuous-subarray-sum": [
+    "Hash Table / Dictionary"
+  ],
+  "convert-bst-to-greater-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "convert-sorted-array-to-binary-search-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "copy-list-with-random-pointer": [
+    "Singly Linked List Fundamentals",
+    "Hash Table / Dictionary"
+  ],
+  "count-all-valid-pickup-and-delivery-options": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "count-good-nodes-in-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "count-odd-numbers-in-an-interval-range": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "count-primes": [
+    "Prime Numbers & Sieve of Eratosthenes"
+  ],
+  "count-sub-islands": [
+    "DFS on Graphs"
+  ],
+  "count-vowels-permutation": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "count-ways-to-build-good-strings": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "counting-bits": [
+    "Bit Counting (Brian Kernighan, Hamming Weight)"
   ],
   "course-schedule": [
     "Topological Sort (Kahn's, DFS)",
     "Cycle Detection in Graphs"
   ],
-  "network-delay-time": [
+  "course-schedule-ii": [
+    "Topological Sort (Kahn's, DFS)"
+  ],
+  "course-schedule-iv": [
+    "DFS on Graphs"
+  ],
+  "daily-temperatures": [
+    "Monotonic Stack"
+  ],
+  "data-stream-as-disjoint-intervals": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "decode-string": [
+    "Stack Fundamentals"
+  ],
+  "decode-ways": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "delete-and-earn": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "delete-node-in-a-bst": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "design-add-and-search-words-data-structure": [
+    "Trie (Prefix Tree)"
+  ],
+  "design-browser-history": [
+    "Singly Linked List Fundamentals"
+  ],
+  "design-circular-queue": [
+    "Singly Linked List Fundamentals"
+  ],
+  "design-hashmap": [
+    "Hash Table / Dictionary"
+  ],
+  "design-hashset": [
+    "Hash Table / Dictionary"
+  ],
+  "design-linked-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "design-parking-system": [
+    "Hash Table / Dictionary"
+  ],
+  "design-twitter": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "design-underground-system": [
+    "Hash Table / Dictionary"
+  ],
+  "detect-squares": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "detonate-the-maximum-bombs": [
+    "DFS on Graphs"
+  ],
+  "diameter-of-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "distinct-subsequences": [
+    "Longest Common Subsequence (LCS)"
+  ],
+  "dota2-senate": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "edit-distance": [
+    "Longest Common Subsequence (LCS)"
+  ],
+  "eliminate-maximum-number-of-monsters": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "encode-and-decode-strings": [
+    "String Manipulation & Parsing"
+  ],
+  "encode-and-decode-tinyurl": [
+    "Hash Table / Dictionary"
+  ],
+  "evaluate-division": [
+    "DFS on Graphs"
+  ],
+  "evaluate-reverse-polish-notation": [
+    "Stack Fundamentals"
+  ],
+  "excel-sheet-column-title": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "extra-characters-in-a-string": [
+    "Trie (Prefix Tree)"
+  ],
+  "find-all-anagrams-in-a-string": [
+    "Hash Table / Dictionary"
+  ],
+  "find-all-numbers-disappeared-in-an-array": [
+    "Hash Table / Dictionary"
+  ],
+  "find-bottom-left-tree-value": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "find-closest-node-to-given-two-nodes": [
+    "DFS on Graphs"
+  ],
+  "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree": [
     "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "find-duplicate-subtrees": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "find-eventual-safe-states": [
+    "DFS on Graphs"
+  ],
+  "find-first-and-last-position-of-element-in-sorted-array": [
+    "Standard Binary Search"
+  ],
+  "find-k-closest-elements": [
+    "Variable Size Window"
+  ],
+  "find-k-pairs-with-smallest-sums": [
+    "K-way Merge"
+  ],
+  "find-median-from-data-stream": [
+    "Two Heaps Pattern (Median Finder)"
+  ],
+  "find-minimum-in-rotated-sorted-array": [
+    "Modified Binary Search (Rotated, Matrix)"
+  ],
+  "find-missing-observations": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "find-peak-element": [
+    "Standard Binary Search"
+  ],
+  "find-pivot-index": [
+    "Hash Table / Dictionary"
+  ],
+  "find-the-city-with-the-smallest-number-of-neighbors": [
+    "Floyd-Warshall (All Pairs)"
+  ],
+  "find-the-difference-of-two-arrays": [
+    "Hash Table / Dictionary"
+  ],
+  "find-the-duplicate-number": [
+    "Fast & Slow Pointers (Tortoise & Hare)"
+  ],
+  "find-the-index-of-the-first-occurrence-in-a-string": [
+    "String Matching (KMP, Rabin-Karp, Z-algorithm)"
+  ],
+  "find-the-kth-largest-integer-in-the-array": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "find-the-longest-valid-obstacle-course-at-each-position": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "find-unique-binary-string": [
+    "Combinations & Combination Sum"
+  ],
+  "first-missing-positive": [
+    "Hash Table / Dictionary"
+  ],
+  "flip-equivalent-binary-trees": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "flip-string-to-monotone-increasing": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "frequency-of-the-most-frequent-element": [
+    "Variable Size Window"
+  ],
+  "fruit-into-baskets": [
+    "Variable Size Window"
+  ],
+  "gas-station": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "generate-parentheses": [
+    "Stack Fundamentals"
+  ],
+  "graph-valid-tree": [
+    "Disjoint Set / Union-Find",
+    "Cycle Detection in Graphs"
+  ],
+  "greatest-common-divisor-of-strings": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "grid-game": [
+    "Hash Table / Dictionary"
+  ],
+  "group-anagrams": [
+    "Hash Table / Dictionary"
+  ],
+  "guess-number-higher-or-lower": [
+    "Standard Binary Search"
+  ],
+  "hand-of-straights": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "happy-number": [
+    "Fast & Slow Pointers (Tortoise & Hare)"
+  ],
+  "house-robber": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "house-robber-ii": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "house-robber-iii": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "implement-stack-using-queues": [
+    "Stack Fundamentals"
+  ],
+  "implement-trie-prefix-tree": [
+    "Trie (Prefix Tree)"
+  ],
+  "insert-delete-getrandom-o1": [
+    "Hash Table / Dictionary"
+  ],
+  "insert-interval": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "insert-into-a-binary-search-tree": [
+    "Binary Search Tree (BST) Properties"
+  ],
+  "insertion-sort-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "integer-break": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "integer-to-roman": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "interleaving-string": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "intersection-of-two-linked-lists": [
+    "Singly Linked List Fundamentals"
+  ],
+  "invert-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "ipo": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "is-graph-bipartite": [
+    "Bipartite Check / Graph Coloring"
+  ],
+  "is-subsequence": [
+    "Hash Table / Dictionary"
+  ],
+  "island-perimeter": [
+    "DFS on Graphs"
+  ],
+  "isomorphic-strings": [
+    "Hash Table / Dictionary"
+  ],
+  "jump-game": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "jump-game-ii": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "jump-game-vii": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "k-closest-points-to-origin": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "koko-eating-bananas": [
+    "Binary Search on Answer / Capacity"
+  ],
+  "kth-largest-element-in-a-stream": [
+    "Top K Elements"
+  ],
+  "kth-largest-element-in-an-array": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "kth-smallest-element-in-a-bst": [
+    "Binary Search Tree (BST) Properties"
+  ],
+  "largest-color-value-in-a-directed-graph": [
+    "DFS on Graphs"
+  ],
+  "largest-number": [
+    "Hash Table / Dictionary"
+  ],
+  "largest-rectangle-in-histogram": [
+    "Monotonic Stack"
+  ],
+  "last-stone-weight": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "last-stone-weight-ii": [
+    "Knapsack 0/1"
+  ],
+  "length-of-last-word": [
+    "Hash Table / Dictionary"
+  ],
+  "letter-combinations-of-a-phone-number": [
+    "Combinations & Combination Sum"
+  ],
+  "lfu-cache": [
+    "Singly Linked List Fundamentals"
+  ],
+  "linked-list-cycle": [
+    "Fast & Slow Pointers (Tortoise & Hare)",
+    "Cycle Detection"
+  ],
+  "longest-common-prefix": [
+    "Hash Table / Dictionary"
   ],
   "longest-common-subsequence": [
     "Longest Common Subsequence (LCS)"
   ],
-  "best-time-to-buy-and-sell-stock-with-cooldown": [
-    "DP with States (Stock Buy/Sell, Cooldown)"
+  "longest-consecutive-sequence": [
+    "Hash Table / Dictionary"
+  ],
+  "longest-happy-string": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "longest-increasing-path-in-a-matrix": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "longest-increasing-subsequence": [
+    "Longest Increasing Subsequence (LIS)"
+  ],
+  "longest-palindromic-subsequence": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "longest-palindromic-substring": [
+    "Palindrome DP",
+    "Palindrome Techniques"
+  ],
+  "longest-repeating-character-replacement": [
+    "Variable Size Window"
+  ],
+  "longest-substring-without-repeating-characters": [
+    "Variable Size Window"
+  ],
+  "longest-turbulent-subarray": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "lowest-common-ancestor-of-a-binary-search-tree": [
+    "Lowest Common Ancestor (LCA)",
+    "Binary Search Tree (BST) Properties"
+  ],
+  "lowest-common-ancestor-of-a-binary-tree": [
+    "Lowest Common Ancestor (LCA)"
+  ],
+  "lru-cache": [
+    "LRU / LFU Cache Design",
+    "Doubly Linked List"
+  ],
+  "majority-element": [
+    "Hash Table / Dictionary"
+  ],
+  "matchsticks-to-square": [
+    "Combinations & Combination Sum"
+  ],
+  "matrix-diagonal-sum": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "max-area-of-island": [
+    "Matrix / Grid Traversal (Islands)"
+  ],
+  "max-points-on-a-line": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "maximal-square": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "maximize-score-after-n-operations": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "maximum-alternating-subsequence-sum": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "maximum-depth-of-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "maximum-frequency-stack": [
+    "Stack Fundamentals"
+  ],
+  "maximum-length-of-a-concatenated-string-with-unique-characters": [
+    "Combinations & Combination Sum"
+  ],
+  "maximum-length-of-pair-chain": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "maximum-number-of-balloons": [
+    "Hash Table / Dictionary"
+  ],
+  "maximum-number-of-removable-characters": [
+    "Standard Binary Search"
+  ],
+  "maximum-number-of-vowels-in-a-substring-of-given-length": [
+    "Variable Size Window"
+  ],
+  "maximum-performance-of-a-team": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "maximum-points-you-can-obtain-from-cards": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "maximum-product-of-the-length-of-two-palindromic-subsequences": [
+    "Hash Table / Dictionary"
+  ],
+  "maximum-product-subarray": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "maximum-subarray": [
+    "Kadane's Algorithm (Max Subarray)"
+  ],
+  "maximum-subarray-min-product": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "maximum-subsequence-score": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "maximum-sum-circular-subarray": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "maximum-twin-sum-of-a-linked-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "maximum-value-of-k-coins-from-piles": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "maximum-width-of-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "median-of-two-sorted-arrays": [
+    "Binary Search on Answer / Capacity",
+    "Divide and Conquer (Merge Sort Logic)"
+  ],
+  "meeting-rooms": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "meeting-rooms-ii": [
+    "Interval Scheduling (Merge, Insert, Overlap)",
+    "Min/Max Heap Fundamentals"
   ],
   "merge-intervals": [
     "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "merge-k-sorted-lists": [
+    "K-way Merge",
+    "Merge & Sort Linked Lists"
+  ],
+  "merge-sorted-array": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "merge-strings-alternately": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "merge-triplets-to-form-target-triplet": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "merge-two-binary-trees": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "merge-two-sorted-lists": [
+    "Merge & Sort Linked Lists"
+  ],
+  "middle-of-the-linked-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "min-cost-climbing-stairs": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "min-cost-to-connect-all-points": [
+    "Minimum Spanning Tree (Prim, Kruskal)"
+  ],
+  "min-stack": [
+    "Stack Fundamentals"
+  ],
+  "minimize-deviation-in-array": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "minimize-maximum-of-array": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "minimize-the-maximum-difference-of-pairs": [
+    "Standard Binary Search"
+  ],
+  "minimum-cost-for-tickets": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "minimum-cost-to-cut-a-stick": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "minimum-cost-tree-from-leaf-values": [
+    "Interval DP"
+  ],
+  "minimum-deletions-to-make-character-frequencies-unique": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "minimum-difference-between-highest-and-lowest-of-k-scores": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "minimum-distance-between-bst-nodes": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "minimum-fuel-cost-to-report-to-the-capital": [
+    "DFS on Graphs"
+  ],
+  "minimum-interval-to-include-each-query": [
+    "Interval Scheduling (Merge, Insert, Overlap)",
+    "Min/Max Heap Fundamentals"
+  ],
+  "minimum-number-of-days-to-eat-n-oranges": [
+    "DFS on Graphs"
+  ],
+  "minimum-number-of-flips-to-make-the-binary-string-alternating": [
+    "Variable Size Window"
+  ],
+  "minimum-number-of-swaps-to-make-the-string-balanced": [
+    "Hash Table / Dictionary"
+  ],
+  "minimum-number-of-vertices-to-reach-all-nodes": [
+    "DFS on Graphs"
+  ],
+  "minimum-operations-to-reduce-x-to-zero": [
+    "Variable Size Window"
+  ],
+  "minimum-path-sum": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "minimum-penalty-for-a-shop": [
+    "Hash Table / Dictionary"
+  ],
+  "minimum-score-of-a-path-between-two-cities": [
+    "DFS on Graphs"
+  ],
+  "minimum-size-subarray-sum": [
+    "Variable Size Window"
+  ],
+  "minimum-time-to-collect-all-apples-in-a-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "minimum-window-substring": [
+    "Variable Size Window",
+    "Hash Table / Dictionary"
+  ],
+  "missing-number": [
+    "Power of 2 / Single Number tricks"
+  ],
+  "move-zeroes": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "multiply-strings": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "n-queens": [
+    "Constraint Satisfaction (N-Queens, Sudoku)"
+  ],
+  "n-queens-ii": [
+    "Combinations & Combination Sum"
+  ],
+  "n-th-tribonacci-number": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "naming-a-company": [
+    "Hash Table / Dictionary"
+  ],
+  "network-delay-time": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "new-21-game": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "next-greater-element-i": [
+    "Hash Table / Dictionary"
+  ],
+  "non-decreasing-array": [
+    "Hash Table / Dictionary"
+  ],
+  "non-overlapping-intervals": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "number-of-1-bits": [
+    "Bit Counting (Brian Kernighan, Hamming Weight)"
+  ],
+  "number-of-closed-islands": [
+    "DFS on Graphs"
+  ],
+  "number-of-connected-components-in-an-undirected-graph": [
+    "Disjoint Set / Union-Find"
+  ],
+  "number-of-enclaves": [
+    "DFS on Graphs"
+  ],
+  "number-of-good-paths": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
   ],
   "number-of-islands": [
     "Matrix / Grid Traversal (Islands)",
     "DFS on Graphs",
     "Disjoint Set / Union-Find"
   ],
-  "clone-graph": [
-    "DFS on Graphs",
-    "BFS on Graphs"
+  "number-of-longest-increasing-subsequence": [
+    "Longest Increasing Subsequence (LIS)"
   ],
-  "word-ladder": [
-    "Multi-source BFS",
-    "BFS on Graphs"
+  "number-of-music-playlists": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "number-of-pairs-of-interchangeable-rectangles": [
+    "Hash Table / Dictionary"
+  ],
+  "number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold": [
+    "Variable Size Window"
+  ],
+  "number-of-subsequences-that-satisfy-the-given-sum-condition": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "number-of-ways-to-form-a-target-string-given-a-dictionary": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "number-of-ways-to-rearrange-sticks-with-k-sticks-visible": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "number-of-zero-filled-subarrays": [
+    "Hash Table / Dictionary"
+  ],
+  "ones-and-zeroes": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "online-stock-span": [
+    "Stack Fundamentals"
+  ],
+  "open-the-lock": [
+    "DFS on Graphs"
+  ],
+  "operations-on-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "optimal-partition-of-string": [
+    "Hash Table / Dictionary"
   ],
   "pacific-atlantic-water-flow": [
     "Multi-source BFS",
     "Matrix / Grid Traversal (Islands)"
   ],
-  "median-of-two-sorted-arrays": [
-    "Binary Search on Answer / Capacity",
-    "Divide and Conquer (Merge Sort Logic)"
-  ],
-  "serialize-and-deserialize-binary-tree": [
-    "Tree Construction & Serialization"
-  ],
-  "find-median-from-data-stream": [
-    "Two Heaps Pattern (Median Finder)"
-  ],
-  "top-k-frequent-elements": [
-    "Top K Elements",
-    "Counting & Frequency Maps"
-  ],
-  "implement-trie-prefix-tree": [
-    "Trie (Prefix Tree)"
-  ],
-  "coin-change": [
-    "Unbounded Knapsack"
-  ],
-  "target-sum": [
-    "Knapsack 0/1",
-    "Backtracking"
-  ],
-  "decode-ways": [
+  "paint-house": [
     "1D DP (Fibonacci, Climbing Stairs, House Robber)"
   ],
-  "unique-paths": [
-    "2D DP (Grids, Matrix Chain)"
+  "palindrome-linked-list": [
+    "Singly Linked List Fundamentals"
   ],
-  "edit-distance": [
-    "Longest Common Subsequence (LCS)"
+  "palindrome-number": [
+    "GCD / LCM / Modular Arithmetic"
   ],
-  "longest-palindromic-substring": [
-    "Palindrome DP"
+  "palindrome-partitioning": [
+    "Palindrome Techniques",
+    "Combinations & Combination Sum"
   ],
-  "burst-balloons": [
-    "Interval DP"
+  "palindromic-substrings": [
+    "Palindrome DP",
+    "Palindrome Techniques"
   ],
-  "regular-expression-matching": [
-    "2D DP (Grids, Matrix Chain)"
+  "partition-equal-subset-sum": [
+    "Knapsack 0/1"
   ],
-  "n-queens": [
-    "Constraint Satisfaction (N-Queens, Sudoku)"
+  "partition-labels": [
+    "Greedy Choice (Jump Game, Gas Station)"
   ],
-  "sudoku-solver": [
-    "Constraint Satisfaction (N-Queens, Sudoku)"
+  "partition-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "partition-to-k-equal-sum-subsets": [
+    "Bitmask DP",
+    "Backtracking"
+  ],
+  "pascals-triangle": [
+    "Hash Table / Dictionary"
+  ],
+  "path-sum": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "path-with-maximum-probability": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "path-with-minimum-effort": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "perfect-squares": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "permutation-in-string": [
+    "Fixed Size Window",
+    "Counting & Frequency Maps"
   ],
   "permutations": [
     "Permutations"
   ],
-  "subsets": [
-    "Subsets & Power Set"
+  "permutations-ii": [
+    "Permutations"
   ],
-  "combination-sum": [
-    "Combinations & Combination Sum"
+  "plus-one": [
+    "Array Fundamentals"
   ],
-  "single-number": [
-    "Power of 2 / Single Number tricks"
+  "populating-next-right-pointers-in-each-node": [
+    "Standard Binary Search"
   ],
-  "counting-bits": [
-    "Bit Counting (Brian Kernighan, Hamming Weight)"
+  "pow-x-n": [
+    "Fast Exponentiation"
   ],
-  "reverse-linked-list": [
-    "In-place Reversal"
+  "powx-n": [
+    "GCD / LCM / Modular Arithmetic"
   ],
-  "merge-two-sorted-lists": [
-    "Merge & Sort Linked Lists"
+  "process-tasks-using-servers": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "product-of-array-except-self": [
+    "Prefix Sum"
+  ],
+  "profitable-schemes": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "push-dominoes": [
+    "Hash Table / Dictionary"
+  ],
+  "range-sum-query-2d-immutable": [
+    "Hash Table / Dictionary"
+  ],
+  "range-sum-query-immutable": [
+    "Hash Table / Dictionary"
+  ],
+  "reconstruct-itinerary": [
+    "Eulerian Path & Circuit"
+  ],
+  "redundant-connection": [
+    "Disjoint Set / Union-Find"
+  ],
+  "regular-expression-matching": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "remove-all-adjacent-duplicates-in-string-ii": [
+    "Stack Fundamentals"
+  ],
+  "remove-covered-intervals": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "remove-duplicates-from-sorted-array": [
+    "Same Direction (Remove Duplicates)"
+  ],
+  "remove-duplicates-from-sorted-array-ii": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "remove-duplicates-from-sorted-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "remove-element": [
+    "Hash Table / Dictionary"
+  ],
+  "remove-k-digits": [
+    "Stack Fundamentals"
+  ],
+  "remove-linked-list-elements": [
+    "Singly Linked List Fundamentals"
+  ],
+  "remove-max-number-of-edges-to-keep-graph-fully-traversable": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "remove-nth-node-from-end-of-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "removing-stars-from-a-string": [
+    "Stack Fundamentals"
   ],
   "reorder-list": [
     "Fast & Slow Pointers (Tortoise & Hare)",
     "In-place Reversal"
   ],
-  "valid-parentheses": [
-    "Stack Fundamentals"
+  "reorder-routes-to-make-all-paths-lead-to-the-city-zero": [
+    "DFS on Graphs"
   ],
-  "min-stack": [
-    "Stack Fundamentals"
+  "reorganize-string": [
+    "Min/Max Heap Fundamentals"
   ],
-  "binary-tree-level-order-traversal": [
-    "BFS / Level Order Traversal"
+  "repeated-dna-sequences": [
+    "Hash Table / Dictionary"
   ],
-  "lowest-common-ancestor-of-a-binary-tree": [
-    "Lowest Common Ancestor (LCA)"
+  "repeated-string-match": [
+    "String Matching (KMP, Rabin-Karp, Z-algorithm)"
   ],
-  "diameter-of-binary-tree": [
+  "replace-elements-with-greatest-element-on-right-side": [
+    "Hash Table / Dictionary"
+  ],
+  "restore-ip-addresses": [
+    "Combinations & Combination Sum"
+  ],
+  "reverse-bits": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "reverse-integer": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "reverse-linked-list": [
+    "In-place Reversal"
+  ],
+  "reverse-linked-list-ii": [
+    "In-place Reversal"
+  ],
+  "reverse-nodes-in-k-group": [
+    "Singly Linked List Fundamentals"
+  ],
+  "reverse-string": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "robot-bounded-in-circle": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "roman-to-integer": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "rotate-array": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "rotate-image": [
+    "Geometry & Convex Hull"
+  ],
+  "rotate-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "rotting-oranges": [
+    "Multi-source BFS"
+  ],
+  "same-tree": [
     "DFS on Trees (Pre/In/Post Order)"
   ],
-  "kth-smallest-element-in-a-bst": [
-    "Binary Search Tree (BST) Properties"
+  "search-a-2d-matrix": [
+    "Standard Binary Search"
   ],
-  "construct-binary-tree-from-preorder-and-inorder-traversal": [
+  "search-in-rotated-sorted-array": [
+    "Modified Binary Search (Rotated, Matrix)"
+  ],
+  "search-in-rotated-sorted-array-ii": [
+    "Standard Binary Search"
+  ],
+  "search-insert-position": [
+    "Standard Binary Search"
+  ],
+  "search-suggestions-system": [
+    "Standard Binary Search"
+  ],
+  "seat-reservation-manager": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "serialize-and-deserialize-binary-tree": [
     "Tree Construction & Serialization"
   ],
-  "path-sum-ii": [
-    "DFS on Trees (Pre/In/Post Order)",
-    "Backtracking"
+  "set-matrix-zeroes": [
+    "Array Fundamentals"
   ],
-  "jump-game": [
-    "Greedy Choice (Jump Game, Gas Station)"
+  "shift-2d-grid": [
+    "GCD / LCM / Modular Arithmetic"
   ],
-  "gas-station": [
-    "Greedy Choice (Jump Game, Gas Station)"
+  "shortest-bridge": [
+    "DFS on Graphs"
+  ],
+  "shortest-path-in-binary-matrix": [
+    "DFS on Graphs"
+  ],
+  "shortest-path-with-alternating-colors": [
+    "DFS on Graphs"
+  ],
+  "shuffle-the-array": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "sign-of-the-product-of-an-array": [
+    "Hash Table / Dictionary"
+  ],
+  "simplify-path": [
+    "Stack Fundamentals"
+  ],
+  "single-element-in-a-sorted-array": [
+    "Standard Binary Search"
+  ],
+  "single-number": [
+    "Power of 2 / Single Number tricks"
+  ],
+  "single-threaded-cpu": [
+    "Min/Max Heap Fundamentals"
+  ],
+  "sliding-window-maximum": [
+    "Monotonic Deque / Sliding Window Maximum",
+    "Fixed Size Window"
+  ],
+  "snakes-and-ladders": [
+    "DFS on Graphs"
+  ],
+  "solving-questions-with-brainpower": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "sort-an-array": [
+    "Hash Table / Dictionary"
+  ],
+  "sort-colors": [
+    "Hash Table / Dictionary"
+  ],
+  "sort-list": [
+    "Merge & Sort Linked Lists",
+    "Divide and Conquer (Merge Sort Logic)"
+  ],
+  "spiral-matrix": [
+    "Array Fundamentals"
+  ],
+  "spiral-matrix-ii": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "split-array-largest-sum": [
+    "Standard Binary Search"
+  ],
+  "split-linked-list-in-parts": [
+    "Singly Linked List Fundamentals"
+  ],
+  "splitting-a-string-into-descending-consecutive-values": [
+    "Combinations & Combination Sum"
+  ],
+  "sqrtx": [
+    "Standard Binary Search"
+  ],
+  "squares-of-a-sorted-array": [
+    "Standard Binary Search"
+  ],
+  "stickers-to-spell-word": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "stone-game": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "stone-game-ii": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "stone-game-iii": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "subarray-sum-equals-k": [
+    "Hash Table / Dictionary"
+  ],
+  "subsets": [
+    "Subsets & Power Set"
+  ],
+  "subsets-ii": [
+    "Subsets & Power Set"
+  ],
+  "subtree-of-another-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "successful-pairs-of-spells-and-potions": [
+    "Standard Binary Search"
+  ],
+  "sudoku-solver": [
+    "Constraint Satisfaction (N-Queens, Sudoku)"
+  ],
+  "sum-of-two-integers": [
+    "Bitwise Operations (XOR, AND, OR, Shifts)"
+  ],
+  "sum-root-to-leaf-numbers": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "surrounded-regions": [
+    "Matrix / Grid Traversal (Islands)",
+    "BFS on Graphs"
+  ],
+  "swap-nodes-in-pairs": [
+    "Singly Linked List Fundamentals"
+  ],
+  "swapping-nodes-in-a-linked-list": [
+    "Singly Linked List Fundamentals"
+  ],
+  "swim-in-rising-water": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "symmetric-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "target-sum": [
+    "Knapsack 0/1"
   ],
   "task-scheduler": [
     "Task Scheduling & Ordering",
     "Counting & Frequency Maps"
   ],
-  "meeting-rooms-ii": [
-    "Interval Scheduling (Merge, Insert, Overlap)",
-    "Min/Max Heap Fundamentals"
+  "text-justification": [
+    "Hash Table / Dictionary"
   ],
-  "range-sum-query-mutable": [
-    "Segment Tree (Range Query, Point Update)",
-    "Binary Indexed Tree / Fenwick Tree"
+  "time-based-key-value-store": [
+    "Modified Binary Search (Rotated, Matrix)"
   ],
-  "count-of-smaller-numbers-after-self": [
-    "Binary Indexed Tree / Fenwick Tree",
-    "Divide and Conquer (Merge Sort Logic)"
+  "time-needed-to-inform-all-employees": [
+    "DFS on Trees (Pre/In/Post Order)"
   ],
-  "the-skyline-problem": [
-    "Line Sweep",
-    "Min/Max Heap Fundamentals"
+  "top-k-frequent-elements": [
+    "Top K Elements",
+    "Counting & Frequency Maps"
+  ],
+  "top-k-frequent-words": [
+    "Top K Elements",
+    "Counting & Frequency Maps"
+  ],
+  "trapping-rain-water": [
+    "Monotonic Stack",
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "triangle": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "trim-a-binary-search-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "two-city-scheduling": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "two-sum": [
+    "Hash Table / Dictionary"
+  ],
+  "two-sum-ii-input-array-is-sorted": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "ugly-number": [
+    "GCD / LCM / Modular Arithmetic"
+  ],
+  "uncrossed-lines": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "unique-binary-search-trees": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "unique-binary-search-trees-ii": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "unique-email-addresses": [
+    "Hash Table / Dictionary"
+  ],
+  "unique-length-3-palindromic-subsequences": [
+    "Hash Table / Dictionary"
+  ],
+  "unique-paths": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "unique-paths-ii": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "valid-anagram": [
+    "Hash Table / Dictionary"
+  ],
+  "valid-palindrome": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "valid-palindrome-ii": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "valid-parentheses": [
+    "Stack Fundamentals"
+  ],
+  "valid-parenthesis-string": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "valid-perfect-square": [
+    "Standard Binary Search"
+  ],
+  "valid-sudoku": [
+    "Hash Table / Dictionary"
+  ],
+  "validate-binary-search-tree": [
+    "Binary Search Tree (BST) Properties"
+  ],
+  "validate-stack-sequences": [
+    "Stack Fundamentals"
+  ],
+  "verifying-an-alien-dictionary": [
+    "DFS on Graphs"
+  ],
+  "walls-and-gates": [
+    "Multi-source BFS"
+  ],
+  "wiggle-sort": [
+    "Hash Table / Dictionary"
+  ],
+  "word-break": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)",
+    "Trie (Prefix Tree)"
+  ],
+  "word-ladder": [
+    "Multi-source BFS",
+    "BFS on Graphs"
+  ],
+  "word-pattern": [
+    "Hash Table / Dictionary"
+  ],
+  "word-search": [
+    "Word Search / Path Backtracking"
+  ],
+  "word-search-ii": [
+    "Word Search / Path Backtracking",
+    "Trie (Prefix Tree)"
+  ],
+  "zigzag-conversion": [
+    "GCD / LCM / Modular Arithmetic"
   ]
 }

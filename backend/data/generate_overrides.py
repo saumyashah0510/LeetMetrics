@@ -1,6 +1,6 @@
 import json
 import re
-import requests
+import httpx
 import os
 
 # ─────────────────────────────────────────────
@@ -227,13 +227,13 @@ def fetch_neetcode_data() -> list:
     url = "https://raw.githubusercontent.com/neetcode-gh/leetcode/main/.problemSiteData.json"
     print(f"Fetching NeetCode data from GitHub...")
     try:
-        resp = requests.get(url, timeout=15)
+        resp = httpx.get(url, timeout=15)
         resp.raise_for_status()
         data = resp.json()
-        print(f"  ✓ Fetched {len(data)} problems from NeetCode")
+        print(f"  [+] Fetched {len(data)} problems from NeetCode")
         return data
     except Exception as e:
-        print(f"  ✗ Failed to fetch from GitHub: {e}")
+        print(f"  [-] Failed to fetch from GitHub: {e}")
         print("  → Falling back to embedded NeetCode 150 list...")
         return get_fallback_neetcode_150()
 
@@ -445,8 +445,8 @@ def main():
     with open(output_path, "w") as f:
         json.dump(overrides, f, indent=2)
 
-    print(f"\n✓ Generated {len(overrides)} problem overrides")
-    print(f"✓ Saved to {output_path}")
+    print(f"\n[+] Generated {len(overrides)} problem overrides")
+    print(f"[+] Saved to {output_path}")
 
     total_with_multiple = sum(1 for v in overrides.values() if len(v) > 1)
     print(f"\n  {len(overrides) - total_with_multiple} problems → single pattern")
