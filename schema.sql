@@ -111,7 +111,8 @@ CREATE TABLE contest_history (
     rating FLOAT,
     ranking INTEGER,
     problems_solved INTEGER,
-    finish_time_seconds INTEGER
+    finish_time_seconds INTEGER,
+    rating_change FLOAT
 );
 
 -- ==========================================
