@@ -47,3 +47,27 @@ class LeetCodeClient:
         response = await self.client.get(url)
         response.raise_for_status()
         return response.json()
+
+    async def get_problem_details(self, title_slug: str) -> Dict[str, Any]:
+        """Fetch full metadata for a specific problem by its slug."""
+        query = """
+        query questionData($titleSlug: String!) {
+          question(titleSlug: $titleSlug) {
+            questionId
+            questionFrontendId
+            title
+            titleSlug
+            difficulty
+            acRate
+            topicTags {
+              name
+            }
+          }
+        }
+        """
+        response = await self.client.post(
+            self.GRAPHQL_URL, 
+            json={"query": query, "variables": {"titleSlug": title_slug}}
+        )
+        response.raise_for_status()
+        return response.json()

@@ -1,0 +1,206 @@
+{
+  "two-sum": [
+    "Hash Table / Dictionary",
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "trapping-rain-water": [
+    "Monotonic Stack",
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "container-with-most-water": [
+    "Opposite Ends (Two Sum, Container)"
+  ],
+  "remove-duplicates-from-sorted-array": [
+    "Same Direction (Remove Duplicates)"
+  ],
+  "3sum": [
+    "Three Pointers"
+  ],
+  "linked-list-cycle": [
+    "Fast & Slow Pointers (Tortoise & Hare)",
+    "Cycle Detection"
+  ],
+  "maximum-subarray": [
+    "Kadane's Algorithm (Max Subarray)",
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "longest-substring-without-repeating-characters": [
+    "Variable Size Window",
+    "Hash Table / Dictionary"
+  ],
+  "sliding-window-maximum": [
+    "Monotonic Deque / Sliding Window Maximum",
+    "Fixed Size Window"
+  ],
+  "lru-cache": [
+    "LRU / LFU Cache Design",
+    "Doubly Linked List"
+  ],
+  "search-in-rotated-sorted-array": [
+    "Modified Binary Search (Rotated, Matrix)"
+  ],
+  "koko-eating-bananas": [
+    "Binary Search on Answer / Capacity"
+  ],
+  "word-search": [
+    "Word Search / Path Backtracking",
+    "Matrix / Grid Traversal (Islands)"
+  ],
+  "course-schedule": [
+    "Topological Sort (Kahn's, DFS)",
+    "Cycle Detection in Graphs"
+  ],
+  "network-delay-time": [
+    "Shortest Path (Dijkstra, Bellman-Ford)"
+  ],
+  "longest-common-subsequence": [
+    "Longest Common Subsequence (LCS)"
+  ],
+  "best-time-to-buy-and-sell-stock-with-cooldown": [
+    "DP with States (Stock Buy/Sell, Cooldown)"
+  ],
+  "merge-intervals": [
+    "Interval Scheduling (Merge, Insert, Overlap)"
+  ],
+  "number-of-islands": [
+    "Matrix / Grid Traversal (Islands)",
+    "DFS on Graphs",
+    "Disjoint Set / Union-Find"
+  ],
+  "clone-graph": [
+    "DFS on Graphs",
+    "BFS on Graphs"
+  ],
+  "word-ladder": [
+    "Multi-source BFS",
+    "BFS on Graphs"
+  ],
+  "pacific-atlantic-water-flow": [
+    "Multi-source BFS",
+    "Matrix / Grid Traversal (Islands)"
+  ],
+  "median-of-two-sorted-arrays": [
+    "Binary Search on Answer / Capacity",
+    "Divide and Conquer (Merge Sort Logic)"
+  ],
+  "serialize-and-deserialize-binary-tree": [
+    "Tree Construction & Serialization"
+  ],
+  "find-median-from-data-stream": [
+    "Two Heaps Pattern (Median Finder)"
+  ],
+  "top-k-frequent-elements": [
+    "Top K Elements",
+    "Counting & Frequency Maps"
+  ],
+  "implement-trie-prefix-tree": [
+    "Trie (Prefix Tree)"
+  ],
+  "coin-change": [
+    "Unbounded Knapsack"
+  ],
+  "target-sum": [
+    "Knapsack 0/1",
+    "Backtracking"
+  ],
+  "decode-ways": [
+    "1D DP (Fibonacci, Climbing Stairs, House Robber)"
+  ],
+  "unique-paths": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "edit-distance": [
+    "Longest Common Subsequence (LCS)"
+  ],
+  "longest-palindromic-substring": [
+    "Palindrome DP"
+  ],
+  "burst-balloons": [
+    "Interval DP"
+  ],
+  "regular-expression-matching": [
+    "2D DP (Grids, Matrix Chain)"
+  ],
+  "n-queens": [
+    "Constraint Satisfaction (N-Queens, Sudoku)"
+  ],
+  "sudoku-solver": [
+    "Constraint Satisfaction (N-Queens, Sudoku)"
+  ],
+  "permutations": [
+    "Permutations"
+  ],
+  "subsets": [
+    "Subsets & Power Set"
+  ],
+  "combination-sum": [
+    "Combinations & Combination Sum"
+  ],
+  "single-number": [
+    "Power of 2 / Single Number tricks"
+  ],
+  "counting-bits": [
+    "Bit Counting (Brian Kernighan, Hamming Weight)"
+  ],
+  "reverse-linked-list": [
+    "In-place Reversal"
+  ],
+  "merge-two-sorted-lists": [
+    "Merge & Sort Linked Lists"
+  ],
+  "reorder-list": [
+    "Fast & Slow Pointers (Tortoise & Hare)",
+    "In-place Reversal"
+  ],
+  "valid-parentheses": [
+    "Stack Fundamentals"
+  ],
+  "min-stack": [
+    "Stack Fundamentals"
+  ],
+  "binary-tree-level-order-traversal": [
+    "BFS / Level Order Traversal"
+  ],
+  "lowest-common-ancestor-of-a-binary-tree": [
+    "Lowest Common Ancestor (LCA)"
+  ],
+  "diameter-of-binary-tree": [
+    "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "kth-smallest-element-in-a-bst": [
+    "Binary Search Tree (BST) Properties"
+  ],
+  "construct-binary-tree-from-preorder-and-inorder-traversal": [
+    "Tree Construction & Serialization"
+  ],
+  "path-sum-ii": [
+    "DFS on Trees (Pre/In/Post Order)",
+    "Backtracking"
+  ],
+  "jump-game": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "gas-station": [
+    "Greedy Choice (Jump Game, Gas Station)"
+  ],
+  "task-scheduler": [
+    "Task Scheduling & Ordering",
+    "Counting & Frequency Maps"
+  ],
+  "meeting-rooms-ii": [
+    "Interval Scheduling (Merge, Insert, Overlap)",
+    "Min/Max Heap Fundamentals"
+  ],
+  "range-sum-query-mutable": [
+    "Segment Tree (Range Query, Point Update)",
+    "Binary Indexed Tree / Fenwick Tree"
+  ],
+  "count-of-smaller-numbers-after-self": [
+    "Binary Indexed Tree / Fenwick Tree",
+    "Divide and Conquer (Merge Sort Logic)"
+  ],
+  "the-skyline-problem": [
+    "Line Sweep",
+    "Min/Max Heap Fundamentals"
+  ]
+}
