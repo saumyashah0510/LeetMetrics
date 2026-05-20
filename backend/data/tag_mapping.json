@@ -21,7 +21,7 @@
   "Trie": "Trie (Prefix Tree)",
   "Heap (Priority Queue)": "Min/Max Heap Fundamentals",
   "Ordered Set": "Min/Max Heap Fundamentals",
-  "Graph": "Graph Representation (Adjacency List/Matrix)",
+  "Graph": "DFS on Graphs",
   "Topological Sort": "Topological Sort (Kahn's, DFS)",
   "Union Find": "Disjoint Set / Union-Find",
   "Shortest Path": "Shortest Path (Dijkstra, Bellman-Ford)",
@@ -30,38 +30,30 @@
   "Strongly Connected Component": "Cycle Detection in Graphs",
   "Eulerian Circuit": "Eulerian Path & Circuit",
   "Bipartite": "Bipartite Check / Graph Coloring",
-
   "Dynamic Programming": "1D DP (Fibonacci, Climbing Stairs, House Robber)",
   "Memoization": "1D DP (Fibonacci, Climbing Stairs, House Robber)",
   "Knapsack": "Knapsack 0/1",
   "Bitmask": "Bitmask DP",
   "Game Theory": "DP with States (Stock Buy/Sell, Cooldown)",
-
   "Backtracking": "Combinations & Combination Sum",
   "Recursion": "Recursion Fundamentals",
   "Divide and Conquer": "Divide and Conquer (Merge Sort Logic)",
   "Quickselect": "Quick Select",
-
   "Greedy": "Greedy Choice (Jump Game, Gas Station)",
   "Interval": "Interval Scheduling (Merge, Insert, Overlap)",
-
   "Bit Manipulation": "Bitwise Operations (XOR, AND, OR, Shifts)",
-
   "Math": "GCD / LCM / Modular Arithmetic",
   "Number Theory": "Number Theory (Euler's Totient, Catalan)",
   "Combinatorics": "Combinatorics & Permutations (nCr)",
   "Geometry": "Geometry & Convex Hull",
   "Line Sweep": "Line Sweep",
-
   "Segment Tree": "Segment Tree (Range Query, Point Update)",
   "Binary Indexed Tree": "Binary Indexed Tree / Fenwick Tree",
   "Sparse Table": "Sparse Table (Range Minimum Query)",
-
   "String Matching": "String Matching (KMP, Rabin-Karp, Z-algorithm)",
   "Rolling Hash": "String Matching (KMP, Rabin-Karp, Z-algorithm)",
   "Suffix Array": "String Matching (KMP, Rabin-Karp, Z-algorithm)",
   "Palindrome": "Palindrome Techniques",
-
   "Matrix": "Matrix / Grid Traversal (Islands)",
   "Simulation": "Array Fundamentals",
   "Counting": "Counting & Frequency Maps",

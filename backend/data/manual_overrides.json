@@ -206,6 +206,9 @@
   "count-good-nodes-in-binary-tree": [
     "DFS on Trees (Pre/In/Post Order)"
   ],
+  "count-number-of-nice-subarrays": [
+    "Multi-pointer Window (At Most K)"
+  ],
   "count-odd-numbers-in-an-interval-range": [
     "GCD / LCM / Modular Arithmetic"
   ],
@@ -286,7 +289,8 @@
     "DFS on Graphs"
   ],
   "diameter-of-binary-tree": [
-    "DFS on Trees (Pre/In/Post Order)"
+    "DFS on Trees (Pre/In/Post Order)",
+    "DP on Trees"
   ],
   "distinct-subsequences": [
     "Longest Common Subsequence (LCS)"
@@ -317,6 +321,9 @@
   ],
   "extra-characters-in-a-string": [
     "Trie (Prefix Tree)"
+  ],
+  "falling-squares": [
+    "Segment Tree with Lazy Propagation"
   ],
   "find-all-anagrams-in-a-string": [
     "Hash Table / Dictionary"
@@ -381,6 +388,13 @@
   "find-the-longest-valid-obstacle-course-at-each-position": [
     "1D DP (Fibonacci, Climbing Stairs, House Robber)"
   ],
+  "find-the-shortest-superstring": [
+    "Bitmasking & Subsets via Bits"
+  ],
+  "find-the-smallest-divisor-given-a-threshold": [
+    "Binary Search on Floating Point",
+    "Binary Search on Answer / Capacity"
+  ],
   "find-unique-binary-string": [
     "Combinations & Combination Sum"
   ],
@@ -397,6 +411,7 @@
     "Variable Size Window"
   ],
   "fruit-into-baskets": [
+    "Multi-pointer Window (At Most K)",
     "Variable Size Window"
   ],
   "gas-station": [
@@ -434,7 +449,8 @@
     "1D DP (Fibonacci, Climbing Stairs, House Robber)"
   ],
   "house-robber-iii": [
-    "DFS on Trees (Pre/In/Post Order)"
+    "DFS on Trees (Pre/In/Post Order)",
+    "DP on Trees"
   ],
   "implement-stack-using-queues": [
     "Stack Fundamentals"
@@ -668,6 +684,7 @@
   ],
   "meeting-rooms-ii": [
     "Interval Scheduling (Merge, Insert, Overlap)",
+    "Line Sweep",
     "Min/Max Heap Fundamentals"
   ],
   "merge-intervals": [
@@ -794,7 +811,8 @@
     "Hash Table / Dictionary"
   ],
   "network-delay-time": [
-    "Shortest Path (Dijkstra, Bellman-Ford)"
+    "Shortest Path (Dijkstra, Bellman-Ford)",
+    "Floyd-Warshall (All Pairs)"
   ],
   "new-21-game": [
     "1D DP (Fibonacci, Climbing Stairs, House Robber)"
@@ -899,7 +917,8 @@
   ],
   "partition-to-k-equal-sum-subsets": [
     "Bitmask DP",
-    "Backtracking"
+    "Backtracking",
+    "Bitmasking & Subsets via Bits"
   ],
   "pascals-triangle": [
     "Hash Table / Dictionary"
@@ -936,7 +955,7 @@
     "Fast Exponentiation"
   ],
   "powx-n": [
-    "GCD / LCM / Modular Arithmetic"
+    "Fast Exponentiation"
   ],
   "process-tasks-using-servers": [
     "Min/Max Heap Fundamentals"
@@ -955,6 +974,10 @@
   ],
   "range-sum-query-immutable": [
     "Hash Table / Dictionary"
+  ],
+  "range-sum-query-mutable": [
+    "Segment Tree (Range Query, Point Update)",
+    "Segment Tree with Lazy Propagation"
   ],
   "reconstruct-itinerary": [
     "Eulerian Path & Circuit"
@@ -1149,6 +1172,7 @@
     "Combinations & Combination Sum"
   ],
   "sqrtx": [
+    "Binary Search on Floating Point",
     "Standard Binary Search"
   ],
   "squares-of-a-sorted-array": [
@@ -1168,6 +1192,9 @@
   ],
   "subarray-sum-equals-k": [
     "Hash Table / Dictionary"
+  ],
+  "subarrays-with-k-different-integers": [
+    "Multi-pointer Window (At Most K)"
   ],
   "subsets": [
     "Subsets & Power Set"
@@ -1189,6 +1216,9 @@
   ],
   "sum-root-to-leaf-numbers": [
     "DFS on Trees (Pre/In/Post Order)"
+  ],
+  "super-pow": [
+    "Fast Exponentiation"
   ],
   "surrounded-regions": [
     "Matrix / Grid Traversal (Islands)",
@@ -1215,6 +1245,9 @@
   ],
   "text-justification": [
     "Hash Table / Dictionary"
+  ],
+  "the-skyline-problem": [
+    "Line Sweep"
   ],
   "time-based-key-value-store": [
     "Modified Binary Search (Rotated, Matrix)"

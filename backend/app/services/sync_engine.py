@@ -92,7 +92,12 @@ class SyncEngine:
             # Layer 1: Generic Tag Mapping Fallback
             for t in topics:
                 if t in tag_mapping:
+                    if t == "Array":
+                        continue
                     patterns_to_assign.append(tag_mapping[t])
+                    
+            if not patterns_to_assign and "Array" in topics:
+                patterns_to_assign.append("Array Fundamentals")
                     
         if not patterns_to_assign:
             return

@@ -135,6 +135,7 @@ PROBLEM_SPECIFIC_OVERRIDES = {
 
     # Advanced Graphs
     "find-the-city-with-the-smallest-number-of-neighbors": ["Floyd-Warshall (All Pairs)"],
+    "network-delay-time": ["Shortest Path (Dijkstra, Bellman-Ford)", "Floyd-Warshall (All Pairs)"],
 
     # 1D DP — specific
     "coin-change":                          ["Unbounded Knapsack"],
@@ -215,6 +216,24 @@ PROBLEM_SPECIFIC_OVERRIDES = {
     # String matching
     "find-the-index-of-the-first-occurrence-in-a-string": ["String Matching (KMP, Rabin-Karp, Z-algorithm)"],
     "repeated-string-match":               ["String Matching (KMP, Rabin-Karp, Z-algorithm)"],
+
+    # Advanced Patterns
+    "binary-tree-maximum-path-sum": ["DP on Trees"],
+    "diameter-of-binary-tree": ["DFS on Trees (Pre/In/Post Order)", "DP on Trees"],
+    "house-robber-iii": ["DFS on Trees (Pre/In/Post Order)", "DP on Trees"],
+    "range-sum-query-mutable": ["Segment Tree (Range Query, Point Update)", "Segment Tree with Lazy Propagation"],
+    "falling-squares": ["Segment Tree with Lazy Propagation"],
+    "the-skyline-problem": ["Line Sweep"],
+    "meeting-rooms-ii": ["Interval Scheduling (Merge, Insert, Overlap)", "Line Sweep", "Min/Max Heap Fundamentals"],
+    "partition-to-k-equal-sum-subsets": ["Bitmask DP", "Backtracking", "Bitmasking & Subsets via Bits"],
+    "find-the-shortest-superstring": ["Bitmasking & Subsets via Bits"],
+    "powx-n": ["Fast Exponentiation"],
+    "super-pow": ["Fast Exponentiation"],
+    "fruit-into-baskets": ["Multi-pointer Window (At Most K)", "Variable Size Window"],
+    "subarrays-with-k-different-integers": ["Multi-pointer Window (At Most K)"],
+    "count-number-of-nice-subarrays": ["Multi-pointer Window (At Most K)"],
+    "sqrtx": ["Binary Search on Floating Point", "Standard Binary Search"],
+    "find-the-smallest-divisor-given-a-threshold": ["Binary Search on Floating Point", "Binary Search on Answer / Capacity"],
 }
 
 

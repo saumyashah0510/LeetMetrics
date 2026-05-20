@@ -61,7 +61,6 @@ INSERT INTO dsa_curriculum (major_category, sub_pattern) VALUES
 ('Trees', 'BFS / Level Order Traversal'),
 ('Trees', 'Lowest Common Ancestor (LCA)'),
 ('Trees', 'Tree Construction & Serialization'),
-('Trees', 'DP on Trees'),
 
 -- 9. Tries & String Algorithms
 ('Tries & String Algorithms', 'Trie (Prefix Tree)'),
@@ -83,7 +82,6 @@ INSERT INTO dsa_curriculum (major_category, sub_pattern) VALUES
 ('Backtracking', 'Word Search / Path Backtracking'),
 
 -- 12. Graphs
-('Graphs', 'Graph Representation (Adjacency List/Matrix)'),
 ('Graphs', 'DFS on Graphs'),
 ('Graphs', 'BFS on Graphs'),
 ('Graphs', 'Multi-source BFS'),

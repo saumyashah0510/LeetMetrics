@@ -131,7 +131,12 @@ async def run_pipeline():
             else:
                 for t in topics:
                     if t in tag_mapping:
+                        if t == "Array":
+                            continue
                         patterns_to_assign.append(tag_mapping[t])
+                        
+                if not patterns_to_assign and "Array" in topics:
+                    patterns_to_assign.append("Array Fundamentals")
                         
             for pattern in set(patterns_to_assign):
                 if pattern in curr_map:
