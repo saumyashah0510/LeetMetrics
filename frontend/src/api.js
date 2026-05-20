@@ -13,6 +13,9 @@ export const checkHealth = (username, session_cookie) =>
 export const triggerSync = (username, session_cookie) =>
   api.post("/api/sync", { username, session_cookie });
 
+export const getSyncStatus = (username) =>
+  api.get("/api/sync/status", { params: { username } });
+
 // Dashboard
 export const getDashboard = (username) =>
   api.get("/api/dashboard", { params: { username } });

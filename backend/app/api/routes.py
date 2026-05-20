@@ -13,14 +13,11 @@ router = APIRouter()
 @router.post("/health")
 async def check_health(request: SyncRequest, db: AsyncSession = Depends(get_db)):
     """Check if the provided cookie is valid and the DB connection works."""
-    # 1. DB Check
     try:
-        # A simple query to ensure the DB connection is alive
         await db.execute(text("SELECT 1"))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {str(e)}")
 
-    # 2. LeetCode Cookie Check
     lc_client = LeetCodeClient(request.session_cookie)
     try:
         data = await lc_client.check_health()
@@ -44,7 +41,6 @@ async def trigger_sync(request: SyncRequest, background_tasks: BackgroundTasks, 
     """Triggers the background sync process."""
     
     async def _run_background_sync(cookie: str, user: str):
-        # We need a new isolated DB session for the background task to prevent session closure errors
         from app.core.database import AsyncSessionLocal
         async with AsyncSessionLocal() as bg_db:
             engine = SyncEngine(bg_db, cookie, user)
@@ -57,6 +53,49 @@ async def trigger_sync(request: SyncRequest, background_tasks: BackgroundTasks, 
     
     return SyncResponse(
         status="started",
-        message="Sync process has been started in the background. Check logs for completion status.",
+        message="Sync process has been started in the background.",
         submissions_added=0
     )
+
+@router.get("/sync/status")
+async def get_sync_status(username: str, db: AsyncSession = Depends(get_db)):
+    """Poll this endpoint to check if a sync has completed for a given user."""
+    # Look up user
+    user_res = await db.execute(
+        text("SELECT id FROM users WHERE username = :u LIMIT 1"),
+        {"u": username}
+    )
+    user_id = user_res.scalar()
+
+    if not user_id:
+        return {"status": "not_started", "submissions_count": 0, "message": "User not found"}
+
+    # Latest sync log entry
+    log_res = await db.execute(
+        text("""
+            SELECT status, completed_at, error_message
+            FROM sync_logs
+            WHERE user_id = :uid
+            ORDER BY started_at DESC
+            LIMIT 1
+        """),
+        {"uid": str(user_id)}
+    )
+    log = log_res.fetchone()
+
+    # Submission count
+    count_res = await db.execute(
+        text("SELECT COUNT(*) FROM submissions WHERE user_id = :uid"),
+        {"uid": str(user_id)}
+    )
+    submissions_count = count_res.scalar() or 0
+
+    if not log:
+        return {"status": "running", "submissions_count": submissions_count, "message": "Sync in progress..."}
+
+    return {
+        "status": log.status,           # "success" | "failed" | "running"
+        "submissions_count": submissions_count,
+        "completed_at": str(log.completed_at) if log.completed_at else None,
+        "error_message": log.error_message,
+    }
