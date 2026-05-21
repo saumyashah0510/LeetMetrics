@@ -1,47 +1,208 @@
-# LeetMetrics 🚀
+<div align="center">
 
-LeetMetrics is an advanced, Data Science-driven analytics engine and dashboard designed to replace generic LeetCode statistics with **mathematically rigorous, Explainable AI (XAI)** mastery tracking. 
+<br />
 
-While LeetCode groups problems into massive, unhelpful buckets (e.g., 2,300+ problems tagged simply as "Array"), LeetMetrics uses a custom two-layer ETL pipeline to re-classify your submissions into **68 granular micro-patterns** (e.g., *Monotonic Stack*, *Topological Sort (Kahn's)*, *Segment Tree with Lazy Propagation*).
+# 📈 LeetMetrics
 
-## 🧠 The Analytics Engine (Mathematical Heuristics)
-LeetMetrics goes far beyond raw problem counting. It runs a secure background inference pipeline to calculate a **0-100 Mastery Score** for every specific DSA pattern, evaluating three meticulously engineered features:
+### Advanced DSA Mastery Analytics & Study Engine
 
-1. **Asymptotic Volume Scaling**: Grinding easy problems yields diminishing returns. Volume scores scale logarithmically against the total size of the curriculum bucket, meaning mastering a massive 200-problem bucket requires significantly more effort than a niche 10-problem bucket.
-2. **Difficulty Weighting**: Problem difficulty is handled via non-linear weights (Easy = 0.5, Medium = 2.0, Hard = 5.0). Hard problems grant immense progression leaps but are bounded by an asymptotic curve to prevent artificial maxing.
-3. **Exponential Recency Decay**: Memory retention is calculated using `e^(-0.001 * days)`. Spamming repetitive submissions is automatically blocked via unique-day session grouping. The `max()` decay formula ensures that undertaking an active revision session instantly snaps your memory multiplier back to `1.0x`.
+<br />
 
-## ✨ Key Features
-- **Micro-Pattern Granularity**: Tracks extremely specific skills instead of broad, useless macro-categories.
-- **Intelligent Study Plans**: Automatically generates a highly targeted 5-problem study plan based on your top 3 weaknesses (Mastery Score < 60), applying an automated ELO constraint to force at least one *Hard* problem into the curriculum if your global rating exceeds 1500.
-- **Global Contest Tracking**: Syncs your actual LeetCode Contest rating history via GraphQL to measure your ultimate performance under pressure.
-- **Explainable AI**: Every mastery score exposes its internal `volume_score`, `difficulty_score`, and `recency_multiplier` directly from the database, so you know exactly *why* your score shifted and exactly how to fix it.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-leetmetrics.vercel.app-gold?style=for-the-badge&logo=vercel&logoColor=black)](https://leetmetrics.vercel.app)
+[![API Status](https://img.shields.io/badge/API%20Status-Operational-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
 
-## 🏗️ Architecture
-- **Backend API**: High-performance, asynchronous `FastAPI` serving lightning-fast precomputed metrics.
-- **Data Layer**: Relational `PostgreSQL` database utilizing strict foreign-key joins, bulk upserts, and an optimized schema for rapid background caching.
-- **ETL Pipeline**: Dual-layer synchronization engine that prioritizes manually curated community overrides (NeetCode/Striver datasets) while dynamically cleaning and mapping raw LeetCode GraphQL tags as a fallback.
+<br />
 
-## 🚀 Getting Started
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Neon](https://img.shields.io/badge/Neon-Database-00e599?style=flat-square&logo=neon&logoColor=black)](https://neon.tech)
+[![License](https://img.shields.io/badge/License-All_Rights_Reserved-ff375f?style=flat-square)](LICENSE)
 
-### 1. Database Setup
-Execute the `schema.sql` script in your PostgreSQL instance to establish the relational tables, unique constraints, and Row-Level Security policies.
+<br />
 
-### 2. Environment Variables
-Create a `.env` file in the `backend/` directory:
-```env
-DATABASE_URL=postgresql+psycopg2://<user>:<password>@<host>/<dbname>
+> **LeetCode tells you how many. We tell you how well.**
+> LeetMetrics re-maps your submissions to 68 DSA micro-patterns and mathematically computes your mastery.
+
+<br />
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Live Demo](#-live-demo)
+- [Architecture](#-system-architecture)
+- [Features](#-core-features)
+- [Analytics Engine](#-analytics-engine)
+- [Security & Privacy](#-security--privacy)
+- [Tech Stack](#-tech-stack)
+- [Database Schema](#-database-schema)
+- [Deployment](#-deployment)
+- [License](#-license)
+
+---
+
+## 🎯 Overview
+
+**LeetMetrics** is an enterprise-grade analytics engine designed for software engineers preparing for top-tier tech interviews. Instead of just tracking the sheer number of problems solved, LeetMetrics fetches your submission history and mathematically calculates your mastery across **68 specific Data Structures and Algorithms (DSA) patterns**. 
+
+Built with an asynchronous FastAPI backend and a premium glassmorphism React frontend, it serves as the ultimate dashboard for tracking true algorithmic progression, contest history, and targeted study planning.
+
+---
+
+## 🌐 Live Demo
+
+| Component | Provider | URL |
+| :--- | :--- | :--- |
+| **Frontend Application** | Vercel | [leetmetrics.vercel.app](https://leetmetrics.vercel.app) (Update to your live link) |
+| **Backend API** | Render | [leetmetrics-api.onrender.com](https://leetmetrics-api.onrender.com) (Update to your live link) |
+| **Database** | Neon | Serverless PostgreSQL |
+
+---
+
+## 🏗️ System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER                          │
+│   React 18 + Vite + Tailwind CSS    (Deployed: Vercel)      │
+│   TanStack Query · Recharts · Framer Motion                  │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ HTTPS / REST API
+                          │ (Trigger background data sync)
+┌─────────────────────────▼───────────────────────────────────┐
+│                        API LAYER                             │
+│   FastAPI (ASGI) + Python 3.12      (Deployed: Render)      │
+│   BackgroundTasks · Pydantic · httpx · CORS Middleware       │
+│                                                              │
+│   ┌─────────────────────────────────────────────────────┐    │
+│   │   Analytics Engine (Recency Decay, Volume, Rank)    │    │
+│   │   LeetCode GraphQL Sync Client (Upsert Logic)       │    │
+│   └─────────────────────────────────────────────────────┘    │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ asyncpg (async DB driver)
+┌─────────────────────────▼───────────────────────────────────┐
+│                      DATABASE LAYER                          │
+│   PostgreSQL 17                     (Deployed: Neon)        │
+│   Curriculum Mappings · Submissions · Mastery Scores         │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### 3. Pipeline Initialization
-Install dependencies and run the ETL pipeline to ingest all 3,900+ LeetCode problems and seed the pristine 68-bucket DSA curriculum mappings.
-```bash
-cd backend
-python run_pipeline.py
-```
+---
 
-### 4. Run the API Server
-Start the FastAPI application to begin serving the analytics endpoints:
-```bash
-uvicorn app.main:app --reload
-```
+## ⚡ Core Features
+
+### 🔄 Asynchronous Data Pipeline
+- **GraphQL Integration:** Directly fetches up to thousands of accepted submissions using LeetCode's undocumented GraphQL APIs via a secure session cookie.
+- **Background Synchronization:** Uses FastAPI `BackgroundTasks` to process data without blocking the UI.
+- **Incremental Upserts:** Safe synchronization logic that only adds new submissions to the database without overwriting or deleting historical data.
+
+### 📊 Master Analytics Dashboard
+- **Radar Charts:** Visualizes mastery across major domains (Trees, Graphs, DP, Arrays, etc.) using heavily optimized, weighted averages.
+- **Sub-Pattern Drill Down:** Explores 68 specific patterns (e.g., *Sliding Window*, *Topological Sort*, *Monotonic Stack*) with distinct metrics.
+- **Contest ELO Tracking:** Chronological timeline of contest rating changes and global rankings.
+
+### 🎯 Intelligent Study Plan
+- **Weakness Identification:** Automatically finds your lowest-scoring patterns (e.g., Score < 60) and cross-references them against unsolved problems.
+- **Targeted Recommendations:** Recommends exactly what to solve next (1 Easy, 3 Medium, 1 Hard) based on global acceptance rates and your specific ELO floor.
+
+---
+
+## 🧠 Analytics Engine
+
+The backend `AnalyticsEngine` computes a definitive 0-100 Mastery Score for every pattern using advanced mathematical heuristics:
+
+1. **Recency Decay (`e^(-λ * days)`):** Memory retention is modeled exponentially. Old solves decay in value; doing a single new problem instantly snaps the recency multiplier back to `1.0x`.
+2. **Difficulty Weighting:** Non-linear weights directly reward hard problems.
+   - Easy = `1.0x`
+   - Medium = `2.5x`
+   - Hard = `5.0x`
+3. **Volume Saturation (`1 - e^(-count/threshold)`):** Returns diminishing returns for over-practicing a single pattern, encouraging breadth.
+
+---
+
+## 🔐 Security & Privacy
+
+LeetMetrics takes privacy incredibly seriously. **No sensitive data is ever stored on the server.**
+
+- **Session Cookie Lifecycle:** Your `LEETCODE_SESSION` cookie is used entirely ephemerally. It is passed securely to the backend, held in memory strictly for the duration of the background sync, and then destroyed. 
+- **Zero Database Logging:** The database stores your LeetCode username and public submission metadata, but **never** stores your session cookies, emails, or passwords.
+- **Local Storage:** On the frontend, your cookie can be optionally stored in your browser's local storage for convenience, but it never persists on our backend.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | React 18, Vite | High-performance SPA framework |
+| **Styling** | Tailwind CSS | Cinematic dark theme & glassmorphism |
+| **Data Fetching** | TanStack React Query | Cache management and polling |
+| **Backend** | FastAPI, Python 3.12 | High-performance async REST API |
+| **Database ORM** | SQLAlchemy 2.0 (asyncio) | Typed, asynchronous SQL execution |
+| **Database** | PostgreSQL 17 | Relational data store |
+| **Scraping** | HTTPX | Async HTTP client for LeetCode APIs |
+| **Hosting (Web)**| Vercel | CDN-backed static hosting |
+| **Hosting (API)**| Render | Containerized Python web service |
+| **Hosting (DB)** | Neon | Serverless PostgreSQL with PgBouncer |
+
+---
+
+## 🗄️ Database Schema
+
+The core relational engine mapped in PostgreSQL:
+
+- `users`: Tracks usernames and current contest ELO ratings.
+- `problems`: Master list of 3,900+ LeetCode problems (ID, Slug, Difficulty, Acceptance Rate).
+- `dsa_curriculum`: 68 unique patterns grouped into 15 Major Categories.
+- `problem_curriculum_mapping`: Maps specific problems to their core DSA pattern.
+- `submissions`: User-specific log of successfully solved problems and timestamps.
+- `mastery_scores`: Pre-computed, materialized scores updated after every sync pipeline.
+- `contest_history`: Chronological log of contest participations and rating deltas.
+
+---
+
+## 🚀 Deployment
+
+The platform is designed to run efficiently on free-tier cloud environments:
+
+### Neon PostgreSQL Setup
+- Connection pooling is handled gracefully via SQLAlchemy.
+- Required configurations for `asyncpg` behind a PgBouncer pooler:
+  ```python
+  engine = create_async_engine(
+      "postgresql+asyncpg://...",
+      pool_pre_ping=True,
+      connect_args={"statement_cache_size": 0, "prepared_statement_cache_size": 0}
+  )
+  ```
+
+### Render API
+- Uses Uvicorn with standard ASGI configurations.
+- Recommended to set up a cron-job (e.g., cron-job.org) to hit the `/api/v1/health` endpoint every 14 minutes to prevent cold starts on the free tier.
+
+---
+
+## 📄 License
+
+**All Rights Reserved.**
+
+This project and its proprietary mastery-scoring algorithms, UI design, and database schema are the intellectual property of **Saumya Shah**. 
+
+It is provided publicly for **portfolio demonstration purposes only**. You may NOT copy, distribute, modify, reverse engineer, or use any portion of this code for personal or commercial projects without explicit written permission.
+
+See the [LICENSE](LICENSE) file for more information.
+
+---
+
+<div align="center">
+  <br />
+  <i>"Don't practice until you get it right. Practice until you can't get it wrong."</i>
+  <br /><br />
+  <b>Built by Saumya Shah</b>
+</div>

@@ -1,8 +1,8 @@
 // Mastery score → color (Easy/Medium/Hard system)
 export function masteryColor(score) {
-  if (score >= 70) return "#00b8a3";
-  if (score >= 40) return "#ffc01e";
-  return "#ff375f";
+  if (score >= 60) return "#00b8a3"; // Mastered (Green)
+  if (score >= 30) return "#ffc01e"; // In Progress (Yellow)
+  return "#ff375f";                  // Needs Practice (Red)
 }
 
 // Difficulty → color

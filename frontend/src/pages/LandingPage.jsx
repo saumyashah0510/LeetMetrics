@@ -111,6 +111,7 @@ export default function LandingPage() {
   const [username, setUsername] = useState("");
   const [cookie, setCookie] = useState("");
   const [showCookie, setShowCookie] = useState(false);
+  const [showCookieHelp, setShowCookieHelp] = useState(false);
   const [remember, setRemember] = useState(true);
   const [step, setStep] = useState(null);
   const [error, setError] = useState("");
@@ -237,13 +238,7 @@ export default function LandingPage() {
             {/* Left */}
             <div className="flex flex-col gap-8">
               <div className="animate-fade-up">
-                <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-lc-orange border border-lc-orange/20 bg-lc-orange/5 px-4 py-2 rounded-full mb-8 shadow-[0_0_15px_rgba(255,161,22,0.05)]">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lc-orange opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-lc-orange"></span>
-                  </span>
-                  DSA Mastery Analytics Engine
-                </div>
+
                 <h1 className="font-display text-5xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight text-white">
                   LeetCode tells<br />you{" "}
                   <em className="not-italic bg-gradient-to-r from-lc-orange to-yellow-400 bg-clip-text text-transparent">how many.</em><br />
@@ -314,7 +309,7 @@ export default function LandingPage() {
               {
                 icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>,
                 title: "Difficulty Weighting",
-                desc: "Easy = 0.5×, Medium = 2×, Hard = 5×. Non-linear weights directly reward hard problems with major progression leaps.",
+                desc: "Easy = 1×, Medium = 2.5×, Hard = 5×. Non-linear weights directly reward hard problems with major progression leaps.",
               },
               {
                 icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>,
@@ -378,7 +373,14 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-2.5">
                   <label htmlFor="cookie" className="text-white text-sm font-semibold flex items-center justify-between">
                     <span>LeetCode Session Cookie</span>
-                    <span className="text-lc-subtle text-[10px] font-medium uppercase tracking-wider bg-white/5 px-2 py-1 rounded">DevTools → Cookies</span>
+                    <button 
+                      type="button" 
+                      onClick={() => setShowCookieHelp(true)} 
+                      className="text-lc-orange text-[10px] font-bold uppercase tracking-wider hover:underline flex items-center gap-1 bg-lc-orange/10 px-2 py-1 rounded"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      How to find this?
+                    </button>
                   </label>
                   <div className="relative group">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lc-subtle group-focus-within:text-lc-orange transition-colors">
@@ -526,33 +528,123 @@ export default function LandingPage() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/10 py-12 px-6 bg-black relative z-10">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5 opacity-80 hover:opacity-100 transition-opacity">
-            <div className="w-7 h-7 rounded-lg bg-lc-orange/10 border border-lc-orange/20 flex items-center justify-center">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="9" width="3" height="6" rx="0.75" fill="#ffa116" opacity="0.5" />
-                <rect x="5.5" y="5.5" width="3" height="9.5" rx="0.75" fill="#ffa116" opacity="0.75" />
-                <rect x="10" y="2" width="3" height="13" rx="0.75" fill="#ffa116" />
-                <line x1="0.5" y1="15.25" x2="13.5" y2="15.25" stroke="#ffa116" strokeWidth="1" strokeLinecap="round" opacity="0.4" />
-                <circle cx="11.5" cy="1.5" r="1" fill="#ffa116" />
-              </svg>
+      <footer className="border-t border-white/5 bg-[#050505] relative z-10 pt-16 pb-8 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-16">
+            
+            {/* Left: Brand & Description */}
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-lc-orange/10 border border-lc-orange/20 flex items-center justify-center">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="9" width="3" height="6" rx="0.75" fill="#ffa116" opacity="0.5" />
+                    <rect x="5.5" y="5.5" width="3" height="9.5" rx="0.75" fill="#ffa116" opacity="0.75" />
+                    <rect x="10" y="2" width="3" height="13" rx="0.75" fill="#ffa116" />
+                    <line x1="0.5" y1="15.25" x2="13.5" y2="15.25" stroke="#ffa116" strokeWidth="1" strokeLinecap="round" opacity="0.4" />
+                    <circle cx="11.5" cy="1.5" r="1" fill="#ffa116" />
+                  </svg>
+                </div>
+                <span className="font-display font-bold text-white text-lg tracking-widest uppercase">
+                  Leet<span className="text-lc-orange">Metrics</span>
+                </span>
+              </div>
+              <p className="text-lc-muted text-xs leading-relaxed max-w-[250px]">
+                A premium analytics engine for modern developers, tracking mastery and optimizing algorithmic progression.
+              </p>
             </div>
-            <span className="font-display font-bold text-white text-sm tracking-wide">
-              Leet<span className="text-lc-orange">Metrics</span>
-            </span>
+
+            {/* Center: Developer */}
+            <div className="flex flex-col items-center justify-center">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-lc-orange/70 uppercase mb-2">
+                Developed with Passion
+              </span>
+              <span className="font-display font-semibold text-white text-xl tracking-wide">
+                Saumya Shah
+              </span>
+              <div className="w-8 h-px bg-gradient-to-r from-transparent via-lc-orange to-transparent mt-3 opacity-50" />
+            </div>
+
+            {/* Right: Socials */}
+            <div className="flex flex-col items-center md:items-end">
+              <span className="text-[10px] font-bold tracking-[0.2em] text-lc-subtle uppercase mb-4">
+                Connect & Collaborate
+              </span>
+              <div className="flex items-center gap-3">
+                <a href="https://www.instagram.com/saumyashah05/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/saumya-shah-5bb8602b4/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/saumyashah0510/LeetMetrics" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+              </div>
+            </div>
+            
           </div>
-          <p className="text-lc-subtle text-xs text-center font-medium">
-            Built by <span className="text-white">Saumya Shah</span> <span className="mx-2 opacity-50">|</span> Not affiliated with LeetCode
-          </p>
+
+          {/* Bottom Bar */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5 text-[9px] font-bold tracking-[0.15em] text-lc-subtle uppercase">
+            <p>&copy; {new Date().getFullYear()} LEETMETRICS. ALL RIGHTS RESERVED.</p>
+            <p>LICENSED AS OPEN SOURCE PORTFOLIO PROJECT.</p>
+          </div>
         </div>
       </footer>
 
-      {/* Optional: Add this to your index.css if not already present for the button shine:
-      @keyframes shine {
-        100% { left: 125%; }
-      } 
-      */}
+      {/* ── Cookie Help Modal ── */}
+      {showCookieHelp && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
+            onClick={() => setShowCookieHelp(false)}
+          />
+          {/* Modal Content */}
+          <div className="relative w-full max-w-lg bg-[#141414] border border-white/10 rounded-2xl shadow-2xl p-6 overflow-hidden animate-fade-up">
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-lc-orange to-yellow-500" />
+            
+            <div className="flex justify-between items-center mb-6 relative z-10">
+              <h3 className="font-display font-bold text-white text-xl">How to get your session cookie</h3>
+              <button onClick={() => setShowCookieHelp(false)} className="text-lc-subtle hover:text-white transition-colors p-1 rounded-md hover:bg-white/10">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            <div className="space-y-5 relative z-10">
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-lc-orange/10 text-lc-orange font-bold flex items-center justify-center border border-lc-orange/20">1</div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Log into LeetCode</p>
+                  <p className="text-lc-muted text-xs leading-relaxed">Open a new tab, go to <a href="https://leetcode.com" target="_blank" rel="noreferrer" className="text-lc-orange hover:underline font-semibold">leetcode.com</a> and make sure you are logged in.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-lc-orange/10 text-lc-orange font-bold flex items-center justify-center border border-lc-orange/20">2</div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Open Developer Tools</p>
+                  <p className="text-lc-muted text-xs leading-relaxed">Right click anywhere on the page and click <strong className="text-white">Inspect</strong>, or press <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono border border-white/20 text-white">F12</kbd>.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-full bg-lc-orange/10 text-lc-orange font-bold flex items-center justify-center border border-lc-orange/20">3</div>
+                <div>
+                  <p className="text-white text-sm font-semibold mb-1">Find the Cookie</p>
+                  <p className="text-lc-muted text-xs leading-relaxed">Go to the <strong className="text-white">Application</strong> tab (or Storage). Expand <strong className="text-white">Cookies</strong> on the left side, select <code>https://leetcode.com</code>, and find the row named <code className="text-lc-orange font-bold bg-lc-orange/10 px-1.5 py-0.5 rounded border border-lc-orange/20">LEETCODE_SESSION</code>. Copy its value.</p>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setShowCookieHelp(false)}
+              className="relative z-10 w-full mt-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm rounded-xl transition-colors"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

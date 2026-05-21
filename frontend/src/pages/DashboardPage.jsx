@@ -197,11 +197,7 @@ export default function DashboardPage() {
     if (!username) navigate("/", { replace: true });
   }, [username, navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("lm_user");
-    localStorage.removeItem("lm_username");
-    navigate("/", { replace: true });
-  };
+
 
   const { data: dash, isLoading: dashLoading } = useQuery({ queryKey: ["dashboard", username], queryFn: () => getDashboard(username).then(r => r.data), enabled: !!username });
   const { data: contest, isLoading: contestLoad } = useQuery({ queryKey: ["contest-sum", username], queryFn: () => getContestSummary(username).then(r => r.data), enabled: !!username });
@@ -258,17 +254,7 @@ export default function DashboardPage() {
                 Live sync for <span className="text-[#eff2f6] font-medium">@{username}</span>
               </p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 bg-[#282828] hover:bg-[#333333] border border-[#3d3d3d] rounded-lg text-[#aba9b0] hover:text-white text-sm font-medium transition-colors"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-              Logout
-            </button>
+
           </div>
 
           {/* ── Main Grid Layout (Left 70%, Right 30%) ── */}

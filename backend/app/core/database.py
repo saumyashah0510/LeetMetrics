@@ -19,8 +19,17 @@ if "&channel_binding=require" in db_url:
 elif "?channel_binding=require" in db_url:
     db_url = db_url.replace("?channel_binding=require", "")
 
-# Create the async SQLAlchemy engine
-engine = create_async_engine(db_url, echo=False)
+# Create the async SQLAlchemy engine with pooler-safe settings
+engine = create_async_engine(
+    db_url, 
+    echo=False,
+    pool_pre_ping=True,
+    pool_recycle=300,
+    connect_args={
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0,
+    }
+)
 
 # Session factory
 AsyncSessionLocal = async_sessionmaker(
