@@ -8,7 +8,7 @@
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-leetmetrics.vercel.app-gold?style=for-the-badge&logo=vercel&logoColor=black)](https://leetmetrics.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-leetmetrics.vercel.app-gold?style=for-the-badge&logo=vercel&logoColor=black)](https://leet-metrics-teal.vercel.app/)
 [![API Status](https://img.shields.io/badge/API%20Status-Operational-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
 
 <br />
