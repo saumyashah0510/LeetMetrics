@@ -10,6 +10,9 @@ if db_url.startswith("postgres://"):
 if db_url.startswith("postgresql://"):
     db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
+if "sslmode=require" in db_url:
+    db_url = db_url.replace("sslmode=require", "ssl=require")
+
 # asyncpg does not support channel_binding, which Neon sometimes appends
 if "&channel_binding=require" in db_url:
     db_url = db_url.replace("&channel_binding=require", "")
