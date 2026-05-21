@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { checkHealth, triggerSync, getSyncStatus } from "../api";
 
 /* ── Mastery color — matches the project's Easy/Medium/Hard system ───── */
@@ -106,6 +107,7 @@ const STEPS = [
 /* ── Main Page ────────────────────────────────────────────────────────── */
 export default function LandingPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [username, setUsername] = useState("");
   const [cookie, setCookie] = useState("");
   const [showCookie, setShowCookie] = useState(false);
@@ -178,6 +180,9 @@ export default function LandingPage() {
 
       // Step 3: done!
       setStep(3);
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: ["mastery"] });
+      queryClient.invalidateQueries({ queryKey: ["contest-sum"] });
       setTimeout(() => navigate("/dashboard"), 800);
     } catch (err) {
       if (pollRef.current) clearInterval(pollRef.current);

@@ -62,11 +62,22 @@ export default function AppLayout({ children }) {
             })}
           </div>
 
-          {/* Right side — username */}
-          <div className="ml-auto shrink-0">
+          {/* Right side — username & logout */}
+          <div className="ml-auto shrink-0 flex items-center gap-4">
             <span className="text-[#6b6b6b] text-xs font-medium">
               {localStorage.getItem("lm_username") || "—"}
             </span>
+            <button
+              onClick={() => {
+                localStorage.removeItem("lm_user");
+                localStorage.removeItem("lm_username");
+                window.location.href = "/";
+              }}
+              className="flex items-center gap-1.5 text-[#ff375f]/70 hover:text-[#ff375f] text-xs font-bold uppercase tracking-wider transition-colors px-2.5 py-1.5 rounded-md hover:bg-[#ff375f]/10"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Logout
+            </button>
           </div>
         </div>
       </nav>

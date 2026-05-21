@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text
+from sqlalchemy import select, func, text, distinct
+import collections
 from app.core.database import get_db
+from app.models.models import User, MasteryScore, DSACurriculum, Submission, Problem, ProblemCurriculumMapping
 
 router = APIRouter()
 
@@ -17,20 +19,28 @@ async def get_user_id(username: str, db: AsyncSession) -> str:
 async def get_all_mastery(username: str, db: AsyncSession = Depends(get_db)):
     user_id = await get_user_id(username, db)
     sql = text("""
+        WITH pattern_weights AS (
+            SELECT curriculum_id, COUNT(*) as total_problems
+            FROM problem_curriculum_mapping
+            GROUP BY curriculum_id
+        )
         SELECT 
             dc.id, dc.major_category, dc.sub_pattern,
             COALESCE(ms.volume_score, 0) as volume_score,
             COALESCE(ms.difficulty_score, 0) as difficulty_score,
             COALESCE(ms.recency_multiplier, 0) as recency_multiplier,
-            COALESCE(ms.score, 0) as score
+            COALESCE(ms.score, 0) as score,
+            COALESCE(pw.total_problems, 1) as weight
         FROM dsa_curriculum dc
         LEFT JOIN mastery_scores ms ON dc.id = ms.curriculum_id AND ms.user_id = :user_id
+        LEFT JOIN pattern_weights pw ON dc.id = pw.curriculum_id
         ORDER BY dc.major_category, dc.id
     """)
     result = await db.execute(sql, {"user_id": user_id})
     return [{"id": r.id, "category": r.major_category, "pattern": r.sub_pattern, 
              "volume_score": r.volume_score, "difficulty_score": r.difficulty_score,
-             "recency_multiplier": r.recency_multiplier, "score": r.score} for r in result.fetchall()]
+             "recency_multiplier": r.recency_multiplier, "score": r.score,
+             "weight": r.weight} for r in result.fetchall()]
 
 @router.get("/mastery/{category}")
 async def get_category_mastery(category: str, username: str, db: AsyncSession = Depends(get_db)):
@@ -206,8 +216,153 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
     """)
     recent_res = await db.execute(recent_sql, {"user_id": user_id})
     recent_solves = [{"title": r.title, "date": r.timestamp, "difficulty": r.difficulty} for r in recent_res.fetchall()]
-    
+    # Solved Stats
+    stats_sql = text("""
+        SELECT p.difficulty, COUNT(DISTINCT p.url_name) as cnt
+        FROM submissions s
+        JOIN problems p ON s.problem_url_name = p.url_name
+        WHERE s.user_id = :user_id
+        GROUP BY p.difficulty
+    """)
+    stats_res = await db.execute(stats_sql, {"user_id": user_id})
+    solved_stats = {"Easy": 0, "Medium": 0, "Hard": 0}
+    for r in stats_res.fetchall():
+        if r.difficulty in solved_stats:
+            solved_stats[r.difficulty] = r.cnt
+            
     return {
         "top_weaknesses": weaknesses,
-        "recent_solves": recent_solves
+        "recent_solves": recent_solves,
+        "solved_stats": {
+            "solved": solved_stats,
+            "total": {"Easy": 944, "Medium": 2057, "Hard": 934}
+        }
     }
+
+
+@router.get("/curriculum/{username}")
+async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
+    """
+    Returns the complete DSA curriculum broken down by major topic and subtopic.
+    For each subtopic, includes:
+    - Mastery score
+    - Progress (solved / total)
+    - Targeted recommendations (1 Easy, 3 Medium, 1 Hard unsolved problems)
+    """
+    user_res = await db.execute(select(User).where(User.username == username))
+    user = user_res.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    user_id = user.id
+
+    # 1. Fetch all solved problems by the user
+    solved_res = await db.execute(
+        select(distinct(Submission.problem_url_name)).where(Submission.user_id == user_id)
+    )
+    solved_urls = {row[0] for row in solved_res.fetchall()}
+
+    # 2. Fetch the full curriculum tree with mastery scores
+    curr_sql = text("""
+        SELECT c.id, c.major_category, c.sub_pattern, m.score
+        FROM dsa_curriculum c
+        LEFT JOIN mastery_scores m ON c.id = m.curriculum_id AND m.user_id = :user_id
+    """)
+    curr_res = await db.execute(curr_sql, {"user_id": user_id})
+    curriculums = curr_res.fetchall()
+
+    # 3. Fetch all problem mappings with problem details (title, difficulty, url, ac_rate)
+    # We order by ac_rate DESC so recommendations favor easier/higher acceptance problems first
+    prob_sql = text("""
+        SELECT pcm.curriculum_id, p.url_name, p.title, p.difficulty, p.ac_rate, p.frontend_id
+        FROM problem_curriculum_mapping pcm
+        JOIN problems p ON pcm.problem_url_name = p.url_name
+        ORDER BY p.ac_rate DESC NULLS LAST
+    """)
+    prob_res = await db.execute(prob_sql)
+    all_problems = prob_res.fetchall()
+
+    # Group problems by curriculum
+    probs_by_curr = collections.defaultdict(list)
+    for p in all_problems:
+        probs_by_curr[p.curriculum_id].append(p)
+
+    # 4. Build the hierarchical response
+    hierarchy = {}
+    
+    for row in curriculums:
+        cid = row.id
+        major = row.major_category
+        sub = row.sub_pattern
+        score = row.score if row.score is not None else 0
+        
+        if major not in hierarchy:
+            hierarchy[major] = {
+                "major_category": major,
+                "total_score": 0,
+                "subtopics": []
+            }
+            
+        sub_probs = probs_by_curr.get(cid, [])
+        total_count = len(sub_probs)
+        
+        solved_count = 0
+        unsolved_easy = []
+        unsolved_med = []
+        unsolved_hard = []
+        
+        for p in sub_probs:
+            if p.url_name in solved_urls:
+                solved_count += 1
+            else:
+                if p.difficulty == "Easy": unsolved_easy.append(p)
+                elif p.difficulty == "Medium": unsolved_med.append(p)
+                elif p.difficulty == "Hard": unsolved_hard.append(p)
+        
+        # Pick recommendations: 1 Easy, 3 Medium, 1 Hard (already sorted by ac_rate DESC)
+        recs = []
+        if unsolved_easy: recs.extend(unsolved_easy[:1])
+        if unsolved_med: recs.extend(unsolved_med[:3])
+        if unsolved_hard: recs.extend(unsolved_hard[:1])
+        
+        # Format recs
+        formatted_recs = [{
+            "frontend_id": r.frontend_id,
+            "title": r.title,
+            "url_name": r.url_name,
+            "difficulty": r.difficulty,
+            "ac_rate": r.ac_rate
+        } for r in recs]
+        
+        hierarchy[major]["subtopics"].append({
+            "id": cid,
+            "sub_pattern": sub,
+            "score": round(score, 1),
+            "progress": {
+                "solved": solved_count,
+                "total": total_count
+            },
+            "recommendations": formatted_recs
+        })
+
+    # Sort major categories by overall average score descending
+    result = []
+    for major, data in hierarchy.items():
+        if not data["subtopics"]: continue
+        
+        # Weight scores by total problems to get an accurate major category score
+        total_weighted = 0
+        total_probs = 0
+        for sub in data["subtopics"]:
+            total_weighted += (sub["score"] * sub["progress"]["total"])
+            total_probs += sub["progress"]["total"]
+            
+        data["total_score"] = round(total_weighted / total_probs, 1) if total_probs > 0 else 0
+        
+        # Sort subtopics by score descending
+        data["subtopics"].sort(key=lambda x: x["score"], reverse=True)
+        result.append(data)
+        
+    result.sort(key=lambda x: x["total_score"], reverse=True)
+    
+    return {"curriculum": result}

@@ -17,12 +17,10 @@ export const getSyncStatus = (username) =>
   api.get("/api/sync/status", { params: { username } });
 
 // Dashboard
-export const getDashboard = (username) =>
-  api.get("/api/dashboard", { params: { username } });
-
-// Mastery
-export const getAllMastery = (username) =>
-  api.get("/api/mastery", { params: { username } });
+export const getDashboard = (username) => api.get("/api/dashboard", { params: { username } });
+export const getContestSummary = (username) => api.get("/api/contests/summary", { params: { username } });
+export const getAllMastery = (username) => api.get("/api/mastery", { params: { username } });
+export const getCurriculum = (username) => api.get(`/api/curriculum/${username}`);
 
 export const getCategoryMastery = (category, username) =>
   api.get(`/api/mastery/${encodeURIComponent(category)}`, {
@@ -41,8 +39,6 @@ export const getStudyPlan = (username) =>
   api.get("/api/study-plan", { params: { username } });
 
 // Contests
-export const getContestSummary = (username) =>
-  api.get("/api/contests/summary", { params: { username } });
 
 export const getContests = (username) =>
   api.get("/api/contests", { params: { username } });

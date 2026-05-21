@@ -124,13 +124,25 @@ class AnalyticsEngine:
                 hard_count = data["hard"]
                 solved_count = easy_count + medium_count + hard_count
                 
-                # Volume Score: Asymptotic curve 50 * (1 - e^(-solved / denominator))
-                volume_denominator = max(total_in_bucket * 0.40, 10.0)
+                # 1. Volume Score: Asymptotic curve 50 * (1 - e^(-solved / denominator))
+                volume_denominator = max(total_in_bucket * 0.25, 10.0)
                 volume_score = 50.0 * (1.0 - math.exp(-solved_count / volume_denominator))
                 
-                # Difficulty Score: Asymptotic curve 50 * (1 - e^(-weight / 40))
-                total_weight = (easy_count * 0.5) + (medium_count * 2.0) + (hard_count * 5.0)
+                # 2. Difficulty Score: Asymptotic curve 50 * (1 - e^(-weight / 40))
+                total_weight = (easy_count * 1) + (medium_count * 2.5) + (hard_count * 5.0)
                 difficulty_score = 50.0 * (1.0 - math.exp(-total_weight / 40.0))
+                
+                # 3. Small Bucket Boost: If the bucket is small, the raw math penalizes the user.
+                # If they solved 100% of ANY bucket, give them full credit.
+                completion_ratio = solved_count / total_in_bucket if total_in_bucket > 0 else 0
+                if completion_ratio >= 1.0:
+                    volume_score = 50.0
+                    difficulty_score = 50.0
+                elif total_in_bucket < 15 and completion_ratio > 0.0:
+                    # For buckets with < 15 problems, guarantee a minimum score proportional to completion
+                    min_score_expected = completion_ratio * 50.0
+                    volume_score = max(volume_score, min_score_expected)
+                    difficulty_score = max(difficulty_score, min_score_expected)
                 
                 # Recency Factor Calculation
                 recency_multiplier = AnalyticsEngine.compute_recency_factor(data["timestamps"])

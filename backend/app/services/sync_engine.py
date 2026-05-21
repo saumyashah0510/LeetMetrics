@@ -199,9 +199,6 @@ class SyncEngine:
                         offset += limit
                         await asyncio.sleep(random.uniform(2.5, 5.0))
                     
-            self.sync_log.status = 'success'
-            self.sync_log.completed_at = func.now()
-            
             self.user.last_sync_timestamp = latest_timestamp_fetched
             self.user.last_synced_at = func.now()
             
@@ -271,6 +268,11 @@ class SyncEngine:
                 await AnalyticsEngine.compute_mastery_for_user(str(self.user.id))
             except Exception as e:
                 print(f"Warning: Analytics engine computation failed: {e}")
+                
+            # Finally, mark the sync as fully complete
+            self.sync_log.status = 'success'
+            self.sync_log.completed_at = func.now()
+            await self.db.commit()
                 
             return submissions_added
             

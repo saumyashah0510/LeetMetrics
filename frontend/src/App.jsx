@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import DashboardPage from "./pages/DashboardPage";
+import TopicsPage from "./pages/TopicsPage";
+import CategoryPage from "./pages/CategoryPage";
 import CustomCursor from "./components/CustomCursor";
 import AppLayout from "./components/AppLayout";
 
@@ -31,7 +33,8 @@ export default function App() {
         <Route path="/"          element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/mastery"   element={<Placeholder name="Mastery" />} />
-        <Route path="/topics"    element={<Placeholder name="Topics" />} />
+        <Route path="/topics"    element={<TopicsPage />} />
+        <Route path="/topics/:categoryId" element={<CategoryPage />} />
         <Route path="/contests"  element={<Placeholder name="Contests" />} />
         <Route path="*"          element={<Navigate to="/" replace />} />
       </Routes>
