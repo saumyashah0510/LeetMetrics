@@ -13,6 +13,12 @@ if db_url.startswith("postgresql://"):
 if "sslmode=require" in db_url:
     db_url = db_url.replace("sslmode=require", "ssl=require")
 
+# asyncpg does not support channel_binding, which Neon sometimes appends
+if "&channel_binding=require" in db_url:
+    db_url = db_url.replace("&channel_binding=require", "")
+elif "?channel_binding=require" in db_url:
+    db_url = db_url.replace("?channel_binding=require", "")
+
 # Create the async SQLAlchemy engine
 engine = create_async_engine(db_url, echo=False)
 
