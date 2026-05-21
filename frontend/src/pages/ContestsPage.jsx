@@ -99,7 +99,6 @@ export default function ContestsPage() {
               {/* Stat Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-[#282828] border border-[#3d3d3d]/50 rounded-xl p-6 flex flex-col justify-center relative overflow-hidden group">
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#ffa116]/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
                   <span className="text-[#8c8c8c] text-[12px] font-bold uppercase tracking-wider mb-2 relative z-10">Current Rating</span>
                   <div className="text-white text-4xl font-bold tabular-nums relative z-10 flex items-center gap-3">
                     {Math.round(summaryData?.rating || 0)}
@@ -112,7 +111,6 @@ export default function ContestsPage() {
                 </div>
                 
                 <div className="bg-[#282828] border border-[#3d3d3d]/50 rounded-xl p-6 flex flex-col justify-center relative overflow-hidden group">
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#00b8a3]/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
                   <span className="text-[#8c8c8c] text-[12px] font-bold uppercase tracking-wider mb-2 relative z-10">Global Ranking</span>
                   <span className="text-white text-4xl font-bold tabular-nums relative z-10">
                     {summaryData?.global_ranking ? summaryData.global_ranking.toLocaleString() : "Unranked"}
@@ -120,7 +118,6 @@ export default function ContestsPage() {
                 </div>
                 
                 <div className="bg-[#282828] border border-[#3d3d3d]/50 rounded-xl p-6 flex flex-col justify-center relative overflow-hidden group">
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#0a84ff]/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
                   <span className="text-[#8c8c8c] text-[12px] font-bold uppercase tracking-wider mb-2 relative z-10">Contests Attended</span>
                   <span className="text-white text-4xl font-bold tabular-nums relative z-10">
                     {historyData.length}

@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import TopicsPage from "./pages/TopicsPage";
 import CategoryPage from "./pages/CategoryPage";
 import ContestsPage from "./pages/ContestsPage";
+import MasteryPage from "./pages/MasteryPage";
 import CustomCursor from "./components/CustomCursor";
 import AppLayout from "./components/AppLayout";
 
@@ -33,7 +34,7 @@ export default function App() {
       <Routes>
         <Route path="/"          element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/mastery"   element={<Placeholder name="Mastery" />} />
+        <Route path="/mastery"   element={<MasteryPage />} />
         <Route path="/topics"    element={<TopicsPage />} />
         <Route path="/topics/:categoryId" element={<CategoryPage />} />
         <Route path="/contests"  element={<ContestsPage />} />
