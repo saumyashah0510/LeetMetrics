@@ -178,16 +178,35 @@ async def get_contests_summary(username: str, db: AsyncSession = Depends(get_db)
 @router.get("/contests")
 async def get_contests(username: str, db: AsyncSession = Depends(get_db)):
     user_id = await get_user_id(username, db)
+    # Order by ASC to calculate rating changes chronologically
     sql = text("""
-        SELECT c.title, c.start_time, ch.ranking, ch.problems_solved, ch.rating_change, ch.rating
+        SELECT c.title, c.start_time, ch.ranking, ch.problems_solved, ch.rating
         FROM contest_history ch
         JOIN contests c ON ch.contest_id = c.id
         WHERE ch.user_id = :user_id
-        ORDER BY c.start_time DESC
+        ORDER BY c.start_time ASC
     """)
     result = await db.execute(sql, {"user_id": user_id})
-    return [{"contest_name": r.title, "date": r.start_time, "rank": r.ranking, 
-             "problems_solved": r.problems_solved, "rating_change": r.rating_change, "rating": r.rating} for r in result.fetchall()]
+    rows = result.fetchall()
+    
+    contests = []
+    prev_rating = 1500.0 # Base LeetCode rating
+    
+    for r in rows:
+        rating_change = r.rating - prev_rating
+        contests.append({
+            "contest_name": r.title,
+            "date": r.start_time,
+            "rank": r.ranking if r.ranking > 0 else None,
+            "problems_solved": r.problems_solved,
+            "rating_change": rating_change,
+            "rating": r.rating
+        })
+        prev_rating = r.rating
+        
+    # Reverse to return newest first
+    contests.reverse()
+    return contests
 
 @router.get("/dashboard")
 async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db)):

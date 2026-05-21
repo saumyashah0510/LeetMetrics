@@ -179,8 +179,8 @@ class SyncEngine:
                         timestamp=datetime.fromtimestamp(sub_timestamp),
                         runtime=runtime_val,
                         memory=memory_val,
-                        language=sub.get("lang"),
-                        code=sub.get("code")
+                        language=sub.get("lang")
+                        # code=sub.get("code")  # Removed to save database space
                     )
                     await self.db.merge(submission)
                     submissions_added += 1
