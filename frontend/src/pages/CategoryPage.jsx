@@ -69,39 +69,42 @@ function SubtopicRow({ subtopic }) {
             Targeted Recommendations
           </h4>
           
-          {recommendations.length === 0 ? (
-            <div className="flex items-center gap-3 p-4 bg-[#282828] rounded-lg border border-[#3d3d3d]/50">
-              <div className="w-8 h-8 rounded-full bg-[#00b8a3]/10 flex items-center justify-center">
+          {progress.solved === progress.total && progress.total > 0 && (
+            <div className="flex items-center gap-3 p-3 mb-4 bg-[#00b8a3]/10 rounded-lg border border-[#00b8a3]/20">
+              <div className="w-8 h-8 rounded-full bg-[#00b8a3]/20 flex items-center justify-center shrink-0">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00b8a3" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
-              <p className="text-[#00b8a3] text-[13px] font-medium">You have solved all problems in this pattern! Excellent work.</p>
-            </div>
-          ) : (
-            <div className="grid lg:grid-cols-2 gap-3">
-              {recommendations.map((rec) => (
-                <a
-                  key={rec.url_name}
-                  href={`https://leetcode.com/problems/${rec.url_name}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded-lg bg-[#282828] border border-[#3d3d3d]/50 hover:border-[#ffa116]/50 transition-colors group"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="text-[#6b6b6b] text-[13px] font-mono w-8 shrink-0">{rec.frontend_id}.</span>
-                    <span className="text-[#eff2f6] text-[14px] font-medium group-hover:text-[#ffa116] transition-colors truncate">
-                      {rec.title}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-5 shrink-0 pl-4">
-                    <span className="text-[#aba9b0] text-[13px] tabular-nums bg-[#333333] px-2 py-0.5 rounded">
-                      {rec.ac_rate.toFixed(1)}% Acc
-                    </span>
-                    <DiffBadge diff={rec.difficulty} />
-                  </div>
-                </a>
-              ))}
+              <p className="text-[#00b8a3] text-[13px] font-medium">You have solved all problems in this pattern! Review these questions to maintain your mastery.</p>
             </div>
           )}
+
+          <div className="grid lg:grid-cols-2 gap-3">
+            {recommendations.map((rec) => (
+              <a
+                key={rec.url_name}
+                href={`https://leetcode.com/problems/${rec.url_name}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-4 rounded-lg bg-[#282828] border border-[#3d3d3d]/50 hover:border-[#ffa116]/50 transition-colors group"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  {rec.solved && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00b8a3" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                  )}
+                  <span className="text-[#6b6b6b] text-[13px] font-mono w-6 shrink-0 text-right">{rec.frontend_id}.</span>
+                  <span className={`text-[14px] font-medium group-hover:text-[#ffa116] transition-colors truncate ${rec.solved ? 'text-[#8c8c8c] line-through decoration-[#8c8c8c]/50' : 'text-[#eff2f6]'}`}>
+                    {rec.title}
+                  </span>
+                </div>
+                <div className="flex items-center gap-5 shrink-0 pl-4">
+                  <span className="text-[#aba9b0] text-[13px] tabular-nums bg-[#333333] px-2 py-0.5 rounded">
+                    {rec.ac_rate.toFixed(1)}% Acc
+                  </span>
+                  <DiffBadge diff={rec.difficulty} />
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       )}
     </div>

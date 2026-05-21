@@ -344,13 +344,20 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         if unsolved_med: recs.extend(unsolved_med[:3])
         if unsolved_hard: recs.extend(unsolved_hard[:1])
         
+        # If no unsolved problems exist, return solved ones to practice
+        if not recs:
+            solved_probs = [p for p in sub_probs if p.url_name in solved_urls]
+            solved_probs.sort(key=lambda x: (x.difficulty != "Hard", x.difficulty != "Medium", -x.ac_rate))
+            recs.extend(solved_probs[:3])
+        
         # Format recs
         formatted_recs = [{
             "frontend_id": r.frontend_id,
             "title": r.title,
             "url_name": r.url_name,
             "difficulty": r.difficulty,
-            "ac_rate": r.ac_rate
+            "ac_rate": r.ac_rate,
+            "solved": r.url_name in solved_urls
         } for r in recs]
         
         hierarchy[major]["subtopics"].append({
