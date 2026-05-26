@@ -275,11 +275,21 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         
     user_id = user.id
 
-    # 1. Fetch all solved problems by the user
+    # 1. Fetch all solved problems by the user (with latest submission timestamp)
     solved_res = await db.execute(
         select(distinct(Submission.problem_url_name)).where(Submission.user_id == user_id)
     )
     solved_urls = {row[0] for row in solved_res.fetchall()}
+
+    # 1b. Fetch latest submission timestamp per problem for this user
+    solved_ts_sql = text("""
+        SELECT problem_url_name, MAX(timestamp) as solved_at
+        FROM submissions
+        WHERE user_id = :user_id
+        GROUP BY problem_url_name
+    """)
+    solved_ts_res = await db.execute(solved_ts_sql, {"user_id": user_id})
+    solved_timestamps = {row.problem_url_name: row.solved_at for row in solved_ts_res.fetchall()}
 
     # 2. Fetch the full curriculum tree with mastery scores
     curr_sql = text("""
@@ -329,14 +339,22 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         unsolved_easy = []
         unsolved_med = []
         unsolved_hard = []
+        solved_list = []
         
         for p in sub_probs:
             if p.url_name in solved_urls:
                 solved_count += 1
+                solved_list.append(p)
             else:
                 if p.difficulty == "Easy": unsolved_easy.append(p)
                 elif p.difficulty == "Medium": unsolved_med.append(p)
                 elif p.difficulty == "Hard": unsolved_hard.append(p)
+        
+        # Sort solved problems by latest submission timestamp (newest first)
+        solved_list.sort(
+            key=lambda x: solved_timestamps.get(x.url_name) or "1970-01-01",
+            reverse=True
+        )
         
         # Pick recommendations: 1 Easy, 3 Medium, 1 Hard (already sorted by ac_rate DESC)
         recs = []
@@ -346,9 +364,9 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         
         # If no unsolved problems exist, return solved ones to practice
         if not recs:
-            solved_probs = [p for p in sub_probs if p.url_name in solved_urls]
-            solved_probs.sort(key=lambda x: (x.difficulty != "Hard", x.difficulty != "Medium", -x.ac_rate))
-            recs.extend(solved_probs[:3])
+            solved_probs_for_rec = [p for p in sub_probs if p.url_name in solved_urls]
+            solved_probs_for_rec.sort(key=lambda x: (x.difficulty != "Hard", x.difficulty != "Medium", -x.ac_rate))
+            recs.extend(solved_probs_for_rec[:3])
         
         # Format recs
         formatted_recs = [{
@@ -359,6 +377,16 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             "ac_rate": r.ac_rate,
             "solved": r.url_name in solved_urls
         } for r in recs]
+
+        # Format solved problems list (ordered by latest solve)
+        formatted_solved = [{
+            "frontend_id": p.frontend_id,
+            "title": p.title,
+            "url_name": p.url_name,
+            "difficulty": p.difficulty,
+            "ac_rate": p.ac_rate,
+            "solved_at": solved_timestamps.get(p.url_name).isoformat() if solved_timestamps.get(p.url_name) else None
+        } for p in solved_list]
         
         hierarchy[major]["subtopics"].append({
             "id": cid,
@@ -368,7 +396,8 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
                 "solved": solved_count,
                 "total": total_count
             },
-            "recommendations": formatted_recs
+            "recommendations": formatted_recs,
+            "solved_problems": formatted_solved
         })
 
     # Sort major categories by overall average score descending
