@@ -356,19 +356,20 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             reverse=True
         )
         
-        # Pick recommendations: 1 Easy, 3 Medium, 1 Hard (already sorted by ac_rate DESC)
-        recs = []
-        if unsolved_easy: recs.extend(unsolved_easy[:1])
-        if unsolved_med: recs.extend(unsolved_med[:3])
-        if unsolved_hard: recs.extend(unsolved_hard[:1])
-        
+        # Build a recommendation POOL (3 Easy, 9 Medium, 3 Hard = up to 15)
+        # so the frontend can rotate through them for refresh / premium skipping
+        pool = []
+        if unsolved_easy: pool.extend(unsolved_easy[:3])
+        if unsolved_med:  pool.extend(unsolved_med[:9])
+        if unsolved_hard: pool.extend(unsolved_hard[:3])
+
         # If no unsolved problems exist, return solved ones to practice
-        if not recs:
+        if not pool:
             solved_probs_for_rec = [p for p in sub_probs if p.url_name in solved_urls]
             solved_probs_for_rec.sort(key=lambda x: (x.difficulty != "Hard", x.difficulty != "Medium", -x.ac_rate))
-            recs.extend(solved_probs_for_rec[:3])
-        
-        # Format recs
+            pool.extend(solved_probs_for_rec[:5])
+
+        # Format pool
         formatted_recs = [{
             "frontend_id": r.frontend_id,
             "title": r.title,
@@ -376,7 +377,7 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             "difficulty": r.difficulty,
             "ac_rate": r.ac_rate,
             "solved": r.url_name in solved_urls
-        } for r in recs]
+        } for r in pool]
 
         # Format solved problems list (ordered by latest solve)
         formatted_solved = [{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
@@ -15,14 +15,68 @@ function DiffBadge({ diff }) {
   );
 }
 
+/* ─── Pick 5 from pool, rotating by seed ─────────────────────── */
+function pickRecs(pool, seed) {
+  if (!pool || pool.length === 0) return [];
+
+  const easy = pool.filter(r => r.difficulty === "Easy");
+  const med  = pool.filter(r => r.difficulty === "Medium");
+  const hard = pool.filter(r => r.difficulty === "Hard");
+
+  // Rotate each bucket by seed so each refresh gives different items
+  const rotate = (arr, n) => {
+    if (arr.length === 0) return [];
+    const s = n % arr.length;
+    return [...arr.slice(s), ...arr.slice(0, s)];
+  };
+
+  const rEasy = rotate(easy, seed);
+  const rMed  = rotate(med,  seed);
+  const rHard = rotate(hard, seed);
+
+  const picked = [];
+  if (rEasy.length > 0) picked.push(rEasy[0]);   // 1 Easy
+  picked.push(...rMed.slice(0, 3));               // up to 3 Medium
+  if (rHard.length > 0) picked.push(rHard[0]);   // 1 Hard
+
+  // Fill to exactly 5 using whatever is left in the pool
+  if (picked.length < 5) {
+    const pickedUrls = new Set(picked.map(r => r.url_name));
+    const extras = pool.filter(r => !pickedUrls.has(r.url_name));
+    // Rotate extras by seed too
+    const rExtras = rotate(extras, seed);
+    picked.push(...rExtras.slice(0, 5 - picked.length));
+  }
+
+  return picked.slice(0, 5);
+}
+
 /* ─── Subtopic Row ────────────────────────────────────────────── */
 function SubtopicRow({ subtopic }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded]   = useState(false);
   const [activeTab, setActiveTab] = useState("recommendations");
-  const { sub_pattern, score, progress, recommendations, solved_problems = [] } = subtopic;
+  const [recSeed, setRecSeed]     = useState(0);
+  const [spinning, setSpinning]   = useState(false);
 
-  const pct = progress.total > 0 ? (progress.solved / progress.total) * 100 : 0;
+  const { sub_pattern, score, progress, recommendations = [], solved_problems = [] } = subtopic;
+
+  const pct   = progress.total > 0 ? (progress.solved / progress.total) * 100 : 0;
   const color = masteryColor(score);
+
+  // Pick 5 from the backend pool based on current seed
+  const displayedRecs = useMemo(
+    () => pickRecs(recommendations, recSeed),
+    [recommendations, recSeed]
+  );
+
+  const canRefresh = recommendations.length > 5;
+
+  function handleRefresh(e) {
+    e.stopPropagation();
+    setSpinning(true);
+    setRecSeed(s => s + 1);
+    setTimeout(() => setSpinning(false), 400);
+  }
 
   return (
     <div className="border border-[#3d3d3d]/50 bg-[#282828] rounded-xl overflow-hidden mb-4 transition-all">
@@ -61,14 +115,9 @@ function SubtopicRow({ subtopic }) {
             }`}
           >
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
+              width="18" height="18" viewBox="0 0 24 24" fill="none"
               stroke={expanded ? "#ffa116" : "#aba9b0"}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
             >
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -125,9 +174,46 @@ function SubtopicRow({ subtopic }) {
 
           {/* Tab Content */}
           <div className="p-5">
+
             {/* ── Recommendations Tab ── */}
             {activeTab === "recommendations" && (
               <div>
+                {/* Tab header with refresh button */}
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-white text-[14px] font-semibold flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffa116" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    Targeted Recommendations
+                    <span className="text-[#6b6b6b] text-[11px] font-normal">
+                      ({displayedRecs.length} of {recommendations.length})
+                    </span>
+                  </h4>
+
+                  {/* Refresh button — only shown if pool has more than 5 */}
+                  {canRefresh && (
+                    <button
+                      id={`refresh-recs-${subtopic.id}`}
+                      onClick={handleRefresh}
+                      title="Get different recommendations"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2f2f2f] border border-[#3d3d3d]/70 text-[#8c8c8c] hover:text-[#ffa116] hover:border-[#ffa116]/40 transition-colors text-[12px] font-medium group"
+                    >
+                      <svg
+                        width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                        className={`transition-transform duration-300 ${spinning ? "rotate-180" : ""} group-hover:rotate-180`}
+                        style={{ transition: spinning ? "transform 0.3s ease" : "transform 0.3s ease" }}
+                      >
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                        <path d="M21 3v5h-5" />
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                        <path d="M8 16H3v5" />
+                      </svg>
+                      Refresh
+                    </button>
+                  )}
+                </div>
+
                 {progress.solved === progress.total && progress.total > 0 && (
                   <div className="flex items-center gap-3 p-3 mb-4 bg-[#00b8a3]/10 rounded-lg border border-[#00b8a3]/20">
                     <div className="w-8 h-8 rounded-full bg-[#00b8a3]/20 flex items-center justify-center shrink-0">
@@ -142,7 +228,7 @@ function SubtopicRow({ subtopic }) {
                 )}
 
                 <div className="grid lg:grid-cols-2 gap-3">
-                  {recommendations.map((rec) => (
+                  {displayedRecs.map((rec) => (
                     <a
                       key={rec.url_name}
                       href={`https://leetcode.com/problems/${rec.url_name}/`}
@@ -205,11 +291,9 @@ function SubtopicRow({ subtopic }) {
                         className="flex items-center justify-between p-3.5 rounded-lg bg-[#282828] border border-[#3d3d3d]/50 hover:border-[#00b8a3]/40 transition-colors group"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          {/* Rank indicator */}
                           <span className="text-[#4d4d4d] text-[11px] font-mono w-5 shrink-0 text-right">
                             {idx + 1}
                           </span>
-                          {/* Green check */}
                           <div className="w-5 h-5 rounded-full bg-[#00b8a3]/15 flex items-center justify-center shrink-0">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00b8a3" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="20 6 9 17 4 12" />
@@ -223,7 +307,6 @@ function SubtopicRow({ subtopic }) {
                           </span>
                         </div>
                         <div className="flex items-center gap-4 shrink-0 pl-4">
-                          {/* Solved At */}
                           {prob.solved_at && (
                             <span className="text-[#6b6b6b] text-[12px] tabular-nums hidden sm:block">
                               {timeAgo(prob.solved_at)}
@@ -298,7 +381,6 @@ export default function CategoryPage() {
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b6b6b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:stroke-[#ffa116] transition-colors">
                         <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
                       </svg>
-                      {/* CSS Tooltip */}
                       <div className="pointer-events-none absolute right-0 top-full mt-2 w-64 opacity-0 transition-opacity group-hover:opacity-100 z-50 bg-[#333333] border border-[#3d3d3d] p-3 rounded shadow-lg text-left text-[#aba9b0] text-[11px] font-normal normal-case tracking-normal">
                         <p className="mb-1.5 text-white font-semibold text-[12px]">Mastery Calculation</p>
                         <p>Score out of 100 based on three factors:</p>
