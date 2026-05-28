@@ -251,11 +251,15 @@ class SyncEngine:
                                 user_id=self.user.id,
                                 contest_id=contest.id,
                                 rating=h.get("rating"),
-                                ranking=0, # GraphQL does not provide ranking directly in history
+                                ranking=0,
                                 problems_solved=h.get("problemsSolved"),
                                 finish_time_seconds=h.get("finishTimeInSeconds")
                             )
                             self.db.add(ch)
+                        else:
+                            ch.rating = h.get("rating")
+                            ch.problems_solved = h.get("problemsSolved")
+                            ch.finish_time_seconds = h.get("finishTimeInSeconds")
             except Exception as e:
                 print(f"Failed to fetch contest history: {e}")
                 await self.db.rollback() # Rollback the contest transaction to prevent dirty session
