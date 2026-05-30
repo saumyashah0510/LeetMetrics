@@ -80,7 +80,7 @@ function HeroCard() {
 
         {/* Footer stats */}
         <div className="grid grid-cols-3 gap-3 pt-5 mt-2 border-t border-white/5 text-center">
-          {[["247", "Solved"], ["68", "Patterns"], ["42%", "Avg Score"]].map(([v, l]) => (
+          {[["247", "Solved"], ["88", "Patterns"], ["42%", "Avg Score"]].map(([v, l]) => (
             <div key={l} className="flex flex-col gap-0.5">
               <p className="text-lc-text font-bold font-display text-lg tracking-tight">{v}</p>
               <p className="text-lc-subtle text-[10px] uppercase tracking-wider font-semibold">{l}</p>
@@ -248,7 +248,7 @@ export default function LandingPage() {
               </div>
 
               <p className="text-lc-muted text-lg leading-relaxed max-w-lg animate-fade-up" style={{ animationDelay: '100ms' }}>
-                LeetMetrics re-maps your submissions to <span className="text-white font-semibold">68 DSA micro-patterns</span>,
+                LeetMetrics re-maps your submissions to <span className="text-white font-semibold">88 DSA micro-patterns</span>,
                 scores your mastery using mathematical heuristics,
                 and generates a targeted study plan based on your exact weaknesses.
               </p>
@@ -278,7 +278,7 @@ export default function LandingPage() {
               <div className="flex flex-wrap gap-4 pt-4 animate-fade-up" style={{ animationDelay: '300ms' }}>
                 {[
                   ["3,900+", "Problems Mapped"],
-                  ["68", "DSA Patterns"],
+                  ["88", "DSA Patterns"],
                   ["0–100", "Mastery Score"],
                 ].map(([v, l]) => (
                   <div key={l} className="bg-white/[0.02] border border-white/5 rounded-xl px-5 py-3 hover:bg-white/[0.04] transition-colors">
@@ -373,12 +373,12 @@ export default function LandingPage() {
                 <div className="flex flex-col gap-2.5">
                   <label htmlFor="cookie" className="text-white text-sm font-semibold flex items-center justify-between">
                     <span>LeetCode Session Cookie</span>
-                    <button 
-                      type="button" 
-                      onClick={() => setShowCookieHelp(true)} 
+                    <button
+                      type="button"
+                      onClick={() => setShowCookieHelp(true)}
                       className="text-lc-orange text-[10px] font-bold uppercase tracking-wider hover:underline flex items-center gap-1 bg-lc-orange/10 px-2 py-1 rounded"
                     >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                       How to find this?
                     </button>
                   </label>
@@ -433,8 +433,8 @@ export default function LandingPage() {
                 {step !== null && (
                   <div className="flex flex-col gap-3 px-5 py-4 bg-black/40 border border-white/10 rounded-xl">
                     {STEPS.map((s, i) => {
-                      const isActive  = i === step;
-                      const isDone    = i < step;
+                      const isActive = i === step;
+                      const isDone = i < step;
                       const isPending = i > step;
                       // Live label for the sync-polling step
                       const label = (i === 2 && isActive && syncCount > 0)
@@ -443,18 +443,17 @@ export default function LandingPage() {
                       return (
                         <div
                           key={s.label}
-                          className={`flex items-center gap-3 text-sm font-medium transition-colors duration-300 ${
-                            isDone    ? "text-[#00b8a3]" :
-                            isActive  ? "text-lc-orange"  :
-                            "text-[#3d3d3d]"
-                          }`}
+                          className={`flex items-center gap-3 text-sm font-medium transition-colors duration-300 ${isDone ? "text-[#00b8a3]" :
+                              isActive ? "text-lc-orange" :
+                                "text-[#3d3d3d]"
+                            }`}
                         >
                           <span className="w-5 h-5 flex items-center justify-center shrink-0">
                             {isDone
                               ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                               : isActive
-                              ? <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
-                              : <span className="w-1.5 h-1.5 rounded-full bg-current block mx-auto" />
+                                ? <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg>
+                                : <span className="w-1.5 h-1.5 rounded-full bg-current block mx-auto" />
                             }
                           </span>
                           <span>{label}</span>
@@ -505,7 +504,7 @@ export default function LandingPage() {
               {[
                 { n: "01", title: "Connect", desc: "Paste your session cookie. It strictly lives only in your local browser." },
                 { n: "02", title: "Sync", desc: "We fetch your accepted submissions via LeetCode's GraphQL API." },
-                { n: "03", title: "Score", desc: "The engine maps submissions to 68 patterns and computes mastery." },
+                { n: "03", title: "Score", desc: "The engine maps submissions to 88 patterns and computes mastery." },
                 { n: "04", title: "Improve", desc: "Get a targeted 5-problem weekly plan aimed at your weakest areas." },
               ].map((s, i) => (
                 <div
@@ -532,7 +531,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-16">
-            
+
             {/* Left: Brand & Description */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
               <div className="flex items-center gap-2.5 mb-4">
@@ -572,17 +571,17 @@ export default function LandingPage() {
               </span>
               <div className="flex items-center gap-3">
                 <a href="https://www.instagram.com/saumyashah05/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
-                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
                 </a>
                 <a href="https://www.linkedin.com/in/saumya-shah-5bb8602b4/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
-                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
                 </a>
                 <a href="https://github.com/saumyashah0510/LeetMetrics" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-lc-muted hover:text-white hover:bg-white/10 hover:border-white/20 transition-all group">
-                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                  <svg className="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg>
                 </a>
               </div>
             </div>
-            
+
           </div>
 
           {/* Bottom Bar */}
@@ -597,18 +596,18 @@ export default function LandingPage() {
       {showCookieHelp && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
             onClick={() => setShowCookieHelp(false)}
           />
           {/* Modal Content */}
           <div className="relative w-full max-w-lg bg-[#141414] border border-white/10 rounded-2xl shadow-2xl p-6 overflow-hidden animate-fade-up">
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-lc-orange to-yellow-500" />
-            
+
             <div className="flex justify-between items-center mb-6 relative z-10">
               <h3 className="font-display font-bold text-white text-xl">How to get your session cookie</h3>
               <button onClick={() => setShowCookieHelp(false)} className="text-lc-subtle hover:text-white transition-colors p-1 rounded-md hover:bg-white/10">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               </button>
             </div>
 
@@ -636,7 +635,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => setShowCookieHelp(false)}
               className="relative z-10 w-full mt-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm rounded-xl transition-colors"
             >

@@ -24,7 +24,7 @@
 <br />
 
 > **LeetCode tells you how many. We tell you how well.**
-> LeetMetrics re-maps your submissions to 68 DSA micro-patterns and mathematically computes your mastery.
+> LeetMetrics re-maps your submissions to 88 DSA micro-patterns and mathematically computes your mastery.
 
 <br />
 
@@ -49,7 +49,7 @@
 
 ## 🎯 Overview
 
-**LeetMetrics** is an enterprise-grade analytics engine designed for software engineers preparing for top-tier tech interviews. Instead of just tracking the sheer number of problems solved, LeetMetrics fetches your submission history and mathematically calculates your mastery across **68 specific Data Structures and Algorithms (DSA) patterns**. 
+**LeetMetrics** is an enterprise-grade analytics engine designed for software engineers preparing for top-tier tech interviews. Instead of just tracking the sheer number of problems solved, LeetMetrics fetches your submission history and mathematically calculates your mastery across **88 specific Data Structures and Algorithms (DSA) patterns**. 
 
 Built with an asynchronous FastAPI backend and a premium glassmorphism React frontend, it serves as the ultimate dashboard for tracking true algorithmic progression, contest history, and targeted study planning.
 
@@ -104,7 +104,7 @@ Built with an asynchronous FastAPI backend and a premium glassmorphism React fro
 
 ### 📊 Master Analytics Dashboard
 - **Radar Charts:** Visualizes mastery across major domains (Trees, Graphs, DP, Arrays, etc.) using heavily optimized, weighted averages.
-- **Sub-Pattern Drill Down:** Explores 68 specific patterns (e.g., *Sliding Window*, *Topological Sort*, *Monotonic Stack*) with distinct metrics.
+- **Sub-Pattern Drill Down:** Explores 88 specific patterns (e.g., *Sliding Window*, *Topological Sort*, *Monotonic Stack*) with distinct metrics.
 - **Contest ELO Tracking:** Chronological timeline of contest rating changes and global rankings.
 
 ### 🎯 Intelligent Study Plan
@@ -159,7 +159,7 @@ The core relational engine mapped in PostgreSQL:
 
 - `users`: Tracks usernames and current contest ELO ratings.
 - `problems`: Master list of 3,900+ LeetCode problems (ID, Slug, Difficulty, Acceptance Rate).
-- `dsa_curriculum`: 68 unique patterns grouped into 15 Major Categories.
+- `dsa_curriculum`: 88 unique patterns grouped into 17 Major Categories.
 - `problem_curriculum_mapping`: Maps specific problems to their core DSA pattern.
 - `submissions`: User-specific log of successfully solved problems and timestamps.
 - `mastery_scores`: Pre-computed, materialized scores updated after every sync pipeline.

@@ -285,7 +285,7 @@ export default function DashboardPage() {
                   />
                   <StatCard
                     label="Mastered Topics"
-                    value={masteredCount != null ? `${masteredCount} / 68` : "—"}
+                    value={masteredCount != null ? `${masteredCount} / ${mastery?.length || 88}` : "—"}
                     sub="Score ≥ 60"
                     loading={masteryLoad}
                   />
