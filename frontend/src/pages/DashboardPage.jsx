@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from "recharts";
 import AppLayout from "../components/AppLayout";
 import { getDashboard, getContestSummary, getAllMastery } from "../api";
@@ -395,18 +395,27 @@ export default function DashboardPage() {
                     : !dash?.recent_solves?.length
                       ? <p className="text-[#6b6b6b] text-sm py-8 text-center">No solves found.</p>
                       : (
-                        dash.recent_solves.map(({ title, date, difficulty }, i) => (
-                          <div key={i} className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[#3d3d3d]/60 last:border-0 hover:bg-[#333333] transition-colors cursor-default group">
-                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                        dash.recent_solves.map(({ title, date, difficulty, category, subtopic_id }, i) => (
+                          <Link
+                            key={i}
+                            to={category ? `/topics/${encodeURIComponent(category)}${subtopic_id ? `#subtopic-${subtopic_id}` : ""}` : "/topics"}
+                            className="flex items-center justify-between gap-3 px-4 py-3 border-b border-[#3d3d3d]/60 last:border-0 hover:bg-[#333333] transition-colors group cursor-pointer text-left"
+                          >
+                            <div className="flex flex-col min-w-0 flex-1">
                               <span className="text-[#eff2f6] text-[13px] font-medium truncate group-hover:text-[#ffa116] transition-colors">
                                 {title}
                               </span>
+                              {category && (
+                                <span className="text-[#8c8c8c] text-[11px] truncate mt-0.5 font-normal">
+                                  {category}
+                                </span>
+                              )}
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
                               <DiffBadge diff={difficulty} />
                               <span className="text-[#aba9b0] text-[11px] w-14 text-right tabular-nums">{timeAgo(date)}</span>
                             </div>
-                          </div>
+                          </Link>
                         ))
                       )
                   }

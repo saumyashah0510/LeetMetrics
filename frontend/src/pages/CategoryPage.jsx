@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import { getCurriculum } from "../api";
 import { getUsername, masteryColor, difficultyColor, timeAgo } from "../utils";
@@ -15,7 +15,24 @@ function DiffBadge({ diff }) {
   );
 }
 
-/* ─── Pick 5 from pool, rotating by seed ─────────────────────── */
+/* ─── Deterministic Seed-based Shuffle ──────────────────────── */
+function seedShuffle(array, seed) {
+  if (array.length <= 1) return [...array];
+  if (seed === 0) return [...array]; // Keep original order for seed 0 to prioritize high ac_rate first
+
+  let shuffled = [...array];
+  let currentSeed = seed;
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    currentSeed = (currentSeed * 9301 + 49297) % 233280;
+    const j = Math.floor((currentSeed / 233280) * (i + 1));
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = temp;
+  }
+  return shuffled;
+}
+
+/* ─── Pick 5 from pool using seed shuffle ────────────────────── */
 function pickRecs(pool, seed) {
   if (!pool || pool.length === 0) return [];
 
@@ -23,29 +40,22 @@ function pickRecs(pool, seed) {
   const med  = pool.filter(r => r.difficulty === "Medium");
   const hard = pool.filter(r => r.difficulty === "Hard");
 
-  // Rotate each bucket by seed so each refresh gives different items
-  const rotate = (arr, n) => {
-    if (arr.length === 0) return [];
-    const s = n % arr.length;
-    return [...arr.slice(s), ...arr.slice(0, s)];
-  };
-
-  const rEasy = rotate(easy, seed);
-  const rMed  = rotate(med,  seed);
-  const rHard = rotate(hard, seed);
+  // Deterministically shuffle each bucket based on the seed
+  const sEasy = seedShuffle(easy, seed + 1);
+  const sMed  = seedShuffle(med,  seed + 2);
+  const sHard = seedShuffle(hard, seed + 3);
 
   const picked = [];
-  if (rEasy.length > 0) picked.push(rEasy[0]);   // 1 Easy
-  picked.push(...rMed.slice(0, 3));               // up to 3 Medium
-  if (rHard.length > 0) picked.push(rHard[0]);   // 1 Hard
+  if (sEasy.length > 0) picked.push(sEasy[0]);   // 1 Easy
+  picked.push(...sMed.slice(0, 3));               // up to 3 Medium
+  if (sHard.length > 0) picked.push(sHard[0]);   // 1 Hard
 
   // Fill to exactly 5 using whatever is left in the pool
   if (picked.length < 5) {
     const pickedUrls = new Set(picked.map(r => r.url_name));
     const extras = pool.filter(r => !pickedUrls.has(r.url_name));
-    // Rotate extras by seed too
-    const rExtras = rotate(extras, seed);
-    picked.push(...rExtras.slice(0, 5 - picked.length));
+    const sExtras = seedShuffle(extras, seed + 4);
+    picked.push(...sExtras.slice(0, 5 - picked.length));
   }
 
   return picked.slice(0, 5);
@@ -53,10 +63,27 @@ function pickRecs(pool, seed) {
 
 /* ─── Subtopic Row ────────────────────────────────────────────── */
 function SubtopicRow({ subtopic }) {
-  const [expanded, setExpanded]   = useState(false);
+  const location = useLocation();
+  const targetId = `subtopic-${subtopic.id}`;
+  const isTarget = location.hash === `#${targetId}`;
+
+  const [expanded, setExpanded]   = useState(isTarget);
   const [activeTab, setActiveTab] = useState("recommendations");
   const [recSeed, setRecSeed]     = useState(0);
   const [spinning, setSpinning]   = useState(false);
+
+  useEffect(() => {
+    if (isTarget) {
+      setExpanded(true);
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [location.hash, isTarget, targetId]);
 
   const { sub_pattern, score, progress, recommendations = [], solved_problems = [] } = subtopic;
 
@@ -79,7 +106,14 @@ function SubtopicRow({ subtopic }) {
   }
 
   return (
-    <div className="border border-[#3d3d3d]/50 bg-[#282828] rounded-xl overflow-hidden mb-4 transition-all">
+    <div
+      id={targetId}
+      className={`border bg-[#282828] rounded-xl overflow-hidden mb-4 transition-all duration-500 ${
+        isTarget
+          ? "border-[#ffa116] ring-1 ring-[#ffa116]"
+          : "border-[#3d3d3d]/50"
+      }`}
+    >
       {/* Header */}
       <div
         className="flex flex-col md:flex-row md:items-center justify-between p-5 hover:bg-[#333333] cursor-pointer transition-colors gap-4"

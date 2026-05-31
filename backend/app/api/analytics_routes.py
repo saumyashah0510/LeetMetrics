@@ -226,7 +226,22 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
     
     # Recent solves (last 5)
     recent_sql = text("""
-        SELECT p.title, s.timestamp, p.difficulty
+        SELECT p.title, s.timestamp, p.difficulty,
+               (SELECT dc.major_category 
+                FROM problem_curriculum_mapping pcm 
+                JOIN dsa_curriculum dc ON pcm.curriculum_id = dc.id 
+                WHERE pcm.problem_url_name = p.url_name 
+                LIMIT 1) as category,
+               (SELECT dc.sub_pattern 
+                FROM problem_curriculum_mapping pcm 
+                JOIN dsa_curriculum dc ON pcm.curriculum_id = dc.id 
+                WHERE pcm.problem_url_name = p.url_name 
+                LIMIT 1) as subtopic,
+               (SELECT dc.id 
+                FROM problem_curriculum_mapping pcm 
+                JOIN dsa_curriculum dc ON pcm.curriculum_id = dc.id 
+                WHERE pcm.problem_url_name = p.url_name 
+                LIMIT 1) as subtopic_id
         FROM submissions s
         JOIN problems p ON s.problem_url_name = p.url_name
         WHERE s.user_id = :user_id
@@ -234,7 +249,16 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
         LIMIT 5
     """)
     recent_res = await db.execute(recent_sql, {"user_id": user_id})
-    recent_solves = [{"title": r.title, "date": r.timestamp, "difficulty": r.difficulty} for r in recent_res.fetchall()]
+    recent_solves = [
+        {
+            "title": r.title, 
+            "date": r.timestamp, 
+            "difficulty": r.difficulty,
+            "category": r.category,
+            "subtopic": r.subtopic,
+            "subtopic_id": r.subtopic_id
+        } for r in recent_res.fetchall()
+    ]
     # Solved Stats
     stats_sql = text("""
         SELECT p.difficulty, COUNT(DISTINCT p.url_name) as cnt
@@ -356,12 +380,12 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             reverse=True
         )
         
-        # Build a recommendation POOL (3 Easy, 9 Medium, 3 Hard = up to 15)
+        # Build a recommendation POOL (10 Easy, 30 Medium, 10 Hard = up to 50)
         # so the frontend can rotate through them for refresh / premium skipping
         pool = []
-        if unsolved_easy: pool.extend(unsolved_easy[:3])
-        if unsolved_med:  pool.extend(unsolved_med[:9])
-        if unsolved_hard: pool.extend(unsolved_hard[:3])
+        if unsolved_easy: pool.extend(unsolved_easy[:10])
+        if unsolved_med:  pool.extend(unsolved_med[:30])
+        if unsolved_hard: pool.extend(unsolved_hard[:10])
 
         # If no unsolved problems exist, return solved ones to practice
         if not pool:
