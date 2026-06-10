@@ -125,6 +125,7 @@ class SyncEngine:
             has_next = True
             last_key = ""
             submissions_added = 0
+            oldest_skipped_timestamp = None
             
             stop_timestamp = self.user.last_sync_timestamp or 0
             latest_timestamp_fetched = stop_timestamp
@@ -161,6 +162,8 @@ class SyncEngine:
                         await self._get_or_create_problem(title_slug)
                     except Exception as e:
                         print(f"Skipping submission for {title_slug}: {e}")
+                        if oldest_skipped_timestamp is None or sub_timestamp < oldest_skipped_timestamp:
+                            oldest_skipped_timestamp = sub_timestamp
                         continue
                     
                     # Safely insert the submission (using merge to act as an UPSERT just in case)
@@ -199,7 +202,12 @@ class SyncEngine:
                         offset += limit
                         await asyncio.sleep(random.uniform(2.5, 5.0))
                     
-            self.user.last_sync_timestamp = latest_timestamp_fetched
+            if oldest_skipped_timestamp is not None:
+                # If there were any ingestion failures, only advance the sync pointer
+                # up to the second before the oldest failed submission to retry it next time.
+                self.user.last_sync_timestamp = oldest_skipped_timestamp - 1
+            else:
+                self.user.last_sync_timestamp = latest_timestamp_fetched
             self.user.last_synced_at = func.now()
             
             # Commit the submissions and user update BEFORE contests
