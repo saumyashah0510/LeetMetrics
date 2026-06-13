@@ -35,7 +35,6 @@
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [Live Demo](#-live-demo)
 - [Architecture](#-system-architecture)
 - [Features](#-core-features)
 - [Analytics Engine](#-analytics-engine)
@@ -54,16 +53,6 @@
 **LeetMetrics** is an enterprise-grade analytics engine designed for software engineers preparing for top-tier tech interviews. Instead of just tracking the sheer number of problems solved, LeetMetrics fetches your submission history and mathematically calculates your mastery across **88 specific Data Structures and Algorithms (DSA) patterns**. 
 
 Built with an asynchronous FastAPI backend and a premium glassmorphism React frontend, it serves as the ultimate dashboard for tracking true algorithmic progression, contest history, and targeted study planning.
-
----
-
-## 🌐 Live Demo
-
-| Component | Provider | URL |
-| :--- | :--- | :--- |
-| **Frontend Application** | Vercel | [leetmetrics.vercel.app](https://leetmetrics.vercel.app) (Update to your live link) |
-| **Backend API** | Render | [leetmetrics-api.onrender.com](https://leetmetrics-api.onrender.com) (Update to your live link) |
-| **Database** | Neon | Serverless PostgreSQL |
 
 ---
 
@@ -182,8 +171,19 @@ We use **Locust** to run high-concurrency benchmarks and verify optimizations.
    - Set the host to `http://localhost:8000` and start swarming.
 
 ### Load Testing Reports & Data
-The complete interactive performance report containing all request statistics, failure rates, and concurrency graphs is stored in the workspace:
-- **[Locust Interactive Report](docs/load_testing/Locust_Report.html)**: Open this file in any web browser to view the detailed charts.
+
+Below are the benchmark graphs and request statistics from our 50-user load test (the full interactive HTML report is available at [Locust Report](docs/load_testing/Locust_Report.html)):
+
+#### 1. Request Statistics Table
+![Request Stats](docs/load_testing/stats_table.png)
+
+#### 2. Requests per Second (RPS) & Failure Rate
+![RPS and Failures](docs/load_testing/rps_chart.png)
+*(Note: The red failures curve represents the sync endpoint returning `429 Too Many Requests` as expected when rate limits are triggered).*
+
+#### 3. Response Times (50th and 95th Percentile)
+![Response Times](docs/load_testing/response_times_chart.png)
+*(Note: Latencies drop to near-zero as soon as Redis caching takes over after the first query).*
 
 ---
 
