@@ -20,15 +20,42 @@ class SyncEngine:
         self.sync_log = None
 
     async def _init_user_and_log(self):
-        """Fetch or create the user, and start a sync log."""
+        """Fetch or create the user with row locking, update session cookie, and start a sync log."""
+        # Check if user exists. If not, create them.
         result = await self.db.execute(select(User).where(User.username == self.username))
         self.user = result.scalars().first()
         
         if not self.user:
-            self.user = User(username=self.username)
+            self.user = User(username=self.username, session_cookie=self.lc_client.session_cookie)
             self.db.add(self.user)
             await self.db.commit()
             await self.db.refresh(self.user)
+        
+        # Acquire row-level lock on User to prevent concurrent sync races
+        result = await self.db.execute(
+            select(User).where(User.username == self.username).with_for_update()
+        )
+        self.user = result.scalars().first()
+        
+        # Update session cookie on the locked user row
+        self.user.session_cookie = self.lc_client.session_cookie
+        
+        # Check for any active "in_progress" sync log started in the last 15 minutes
+        active_log_query = select(SyncLog).where(
+            SyncLog.user_id == self.user.id,
+            SyncLog.status == 'in_progress'
+        ).order_by(SyncLog.started_at.desc())
+        
+        log_res = await self.db.execute(active_log_query)
+        active_log = log_res.scalars().first()
+        
+        if active_log:
+            from datetime import timezone
+            import datetime
+            started_at = active_log.started_at
+            now = datetime.datetime.now(timezone.utc) if started_at.tzinfo else datetime.datetime.now()
+            if (now - started_at).total_seconds() < 15 * 60:
+                raise ValueError("A sync is already in progress for this user.")
         
         self.sync_log = SyncLog(user_id=self.user.id, status='in_progress')
         self.db.add(self.sync_log)
@@ -285,6 +312,18 @@ class SyncEngine:
             self.sync_log.status = 'success'
             self.sync_log.completed_at = func.now()
             await self.db.commit()
+            
+            # Invalidate Redis cache
+            try:
+                from app.core.redis import get_redis_client
+                redis = get_redis_client()
+                if redis:
+                    dashboard_key = f"dashboard:{self.username}"
+                    curriculum_key = f"curriculum:{self.username}"
+                    await redis.delete(dashboard_key, curriculum_key)
+                    print(f"Invalidated cache for key: {dashboard_key} and {curriculum_key}")
+            except Exception as cache_err:
+                print(f"Warning: Failed to invalidate cache on success: {cache_err}")
                 
             return submissions_added
             

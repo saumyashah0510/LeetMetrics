@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 import httpx
@@ -7,8 +7,10 @@ from app.core.database import get_db
 from app.schemas.sync import SyncRequest, SyncResponse
 from app.services.leetcode_client import LeetCodeClient
 from app.services.sync_engine import SyncEngine
+from app.core.redis import RateLimiter
 
 router = APIRouter()
+
 
 @router.post("/health")
 async def check_health(request: SyncRequest, db: AsyncSession = Depends(get_db)):
@@ -36,7 +38,7 @@ async def check_health(request: SyncRequest, db: AsyncSession = Depends(get_db))
     finally:
         await lc_client.close()
 
-@router.post("/sync", response_model=SyncResponse)
+@router.post("/sync", response_model=SyncResponse, dependencies=[Depends(RateLimiter(times=5, minutes=1))])
 async def trigger_sync(request: SyncRequest, background_tasks: BackgroundTasks, db: AsyncSession = Depends(get_db)):
     """Triggers the background sync process."""
     

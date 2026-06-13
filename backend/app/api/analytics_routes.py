@@ -210,6 +210,18 @@ async def get_contests(username: str, db: AsyncSession = Depends(get_db)):
 
 @router.get("/dashboard")
 async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db)):
+    redis = None
+    try:
+        from app.core.redis import get_redis_client
+        import json
+        redis = get_redis_client()
+        if redis:
+            cached = await redis.get(f"dashboard:{username}")
+            if cached:
+                return json.loads(cached)
+    except Exception as e:
+        print(f"Warning: Redis read failed for dashboard cache: {e}")
+
     user_id = await get_user_id(username, db)
     
     # Top weaknesses
@@ -252,7 +264,7 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
     recent_solves = [
         {
             "title": r.title, 
-            "date": r.timestamp, 
+            "date": r.timestamp.isoformat() if r.timestamp else None, 
             "difficulty": r.difficulty,
             "category": r.category,
             "subtopic": r.subtopic,
@@ -273,7 +285,7 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
         if r.difficulty in solved_stats:
             solved_stats[r.difficulty] = r.cnt
             
-    return {
+    dashboard_data = {
         "top_weaknesses": weaknesses,
         "recent_solves": recent_solves,
         "solved_stats": {
@@ -281,6 +293,14 @@ async def get_dashboard_summary(username: str, db: AsyncSession = Depends(get_db
             "total": {"Easy": 944, "Medium": 2057, "Hard": 934}
         }
     }
+
+    try:
+        if redis:
+            await redis.set(f"dashboard:{username}", json.dumps(dashboard_data), ex=300)
+    except Exception as e:
+        print(f"Warning: Redis write failed for dashboard cache: {e}")
+
+    return dashboard_data
 
 
 @router.get("/curriculum/{username}")
@@ -292,6 +312,17 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
     - Progress (solved / total)
     - Targeted recommendations (1 Easy, 3 Medium, 1 Hard unsolved problems)
     """
+    redis = None
+    try:
+        from app.core.redis import get_redis_client
+        import json
+        redis = get_redis_client()
+        if redis:
+            cached = await redis.get(f"curriculum:{username}")
+            if cached:
+                return json.loads(cached)
+    except Exception as e:
+        print(f"Warning: Redis read failed for curriculum cache: {e}")
     user_res = await db.execute(select(User).where(User.username == username))
     user = user_res.scalar_one_or_none()
     if not user:
@@ -445,4 +476,11 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         
     result.sort(key=lambda x: x["total_score"], reverse=True)
     
-    return {"curriculum": result}
+    curriculum_data = {"curriculum": result}
+    try:
+        if redis:
+            await redis.set(f"curriculum:{username}", json.dumps(curriculum_data), ex=300)
+    except Exception as e:
+        print(f"Warning: Redis write failed for curriculum cache: {e}")
+        
+    return curriculum_data
