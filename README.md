@@ -172,18 +172,14 @@ We use **Locust** to run high-concurrency benchmarks and verify optimizations.
 
 ### Load Testing Reports & Data
 
-Below are the benchmark graphs and request statistics from our 50-user load test (the full interactive HTML report is available at [Locust Report](docs/load_testing/Locust_Report.html)):
+Below are the consolidated benchmark reports and graphs from our 50-user load test (the full interactive report is available at [Locust Report](docs/load_testing/Locust_Report.html)):
 
-#### 1. Request Statistics Table
-![Request Stats](docs/load_testing/stats_table.png)
+#### 1. Request & Response Time Statistics
+![Locust Request Statistics](docs/load_testing/locust_statistics.png)
 
-#### 2. Requests per Second (RPS) & Failure Rate
-![RPS and Failures](docs/load_testing/rps_chart.png)
-*(Note: The red failures curve represents the sync endpoint returning `429 Too Many Requests` as expected when rate limits are triggered).*
-
-#### 3. Response Times (50th and 95th Percentile)
-![Response Times](docs/load_testing/response_times_chart.png)
-*(Note: Latencies drop to near-zero as soon as Redis caching takes over after the first query).*
+#### 2. Concurrency Performance Charts
+![Locust Concurrency Charts](docs/load_testing/locust_charts.png)
+*(Note: The red failures curve on the RPS graph represents the sync endpoint returning `429 Too Many Requests` as expected when rate limits are triggered. The response time graph shows latencies flatlining to near-zero as soon as Redis caching takes over after the first query).*
 
 ---
 
