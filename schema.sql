@@ -17,6 +17,7 @@ DROP INDEX IF EXISTS idx_submissions_user_problem;
 
 DROP TABLE IF EXISTS contest_history;
 DROP TABLE IF EXISTS contests;
+DROP TABLE IF EXISTS company_questions;
 DROP TABLE IF EXISTS mastery_scores;
 DROP TABLE IF EXISTS submissions;
 DROP TABLE IF EXISTS problem_curriculum_mapping;
@@ -119,6 +120,17 @@ CREATE TABLE contest_history (
     rating_change FLOAT
 );
 
+-- 10. Company Questions Table
+CREATE TABLE company_questions (
+    id SERIAL PRIMARY KEY,
+    company_name TEXT NOT NULL,
+    timeframe TEXT NOT NULL CHECK (timeframe IN ('30-days', '3-months', '6-months', 'all')),
+    problem_url_name TEXT NOT NULL REFERENCES problems(url_name) ON DELETE CASCADE,
+    frequency_score FLOAT,
+    importance_level TEXT CHECK (importance_level IN ('Most Frequent', 'Important', 'Regular')),
+    UNIQUE (company_name, timeframe, problem_url_name)
+);
+
 -- ==========================================
 -- STEP 3: Performance Indexes
 -- ==========================================
@@ -129,6 +141,7 @@ CREATE INDEX idx_submissions_timestamp ON submissions(timestamp);
 CREATE INDEX idx_mastery_scores_computed_at ON mastery_scores(computed_at);
 CREATE INDEX idx_problems_difficulty ON problems(difficulty);
 CREATE INDEX idx_contest_history_user ON contest_history(user_id);
+CREATE INDEX idx_company_questions_lookup ON company_questions(company_name, timeframe);
 
 -- ==========================================
 -- STEP 4: Row Level Security

@@ -6,6 +6,7 @@ import TopicsPage from "./pages/TopicsPage";
 import CategoryPage from "./pages/CategoryPage";
 import ContestsPage from "./pages/ContestsPage";
 import MasteryPage from "./pages/MasteryPage";
+import InterviewPage from "./pages/InterviewPage";
 import CustomCursor from "./components/CustomCursor";
 import AppLayout from "./components/AppLayout";
 
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/mastery"   element={<MasteryPage />} />
         <Route path="/topics"    element={<TopicsPage />} />
         <Route path="/topics/:categoryId" element={<CategoryPage />} />
+        <Route path="/interview" element={<InterviewPage />} />
         <Route path="/contests"  element={<ContestsPage />} />
         <Route path="*"          element={<Navigate to="/" replace />} />
       </Routes>

@@ -95,3 +95,14 @@ class ContestHistory(Base):
     finish_time_seconds = Column(Integer)
 
     user = relationship("User", back_populates="contest_history")
+
+class CompanyQuestion(Base):
+    __tablename__ = "company_questions"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    company_name = Column(String, nullable=False)
+    timeframe = Column(String, nullable=False)
+    problem_url_name = Column(String, ForeignKey("problems.url_name", ondelete="CASCADE"), nullable=False)
+    frequency_score = Column(Float)
+    importance_level = Column(String)
+
+    problem = relationship("Problem")

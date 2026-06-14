@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { to: "/dashboard", label: "Dashboard" },
   { to: "/mastery",   label: "Mastery" },
   { to: "/topics",    label: "Topics" },
+  { to: "/interview", label: "Interview" },
   { to: "/contests",  label: "Contests" },
 ];
 

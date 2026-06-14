@@ -1,0 +1,283 @@
+{
+  "Arrays & Hashing": {
+    "core_concepts": [
+      "Homogeneous data collection & contiguous memory allocation.",
+      "O(1) average lookup time via Hash Map / Hash Set.",
+      "Index-based access & coordinate compression."
+    ],
+    "recognition_cues": [
+      "Need for O(1) frequency count or check for presence quickly.",
+      "Contiguous elements and index manipulation.",
+      "Duplicate detection or grouping of anagrams."
+    ],
+    "common_combinations": [
+      "Arrays + Hashing (Two Sum, Group Anagrams)",
+      "Arrays + Two Pointers (Cyclic Sort, Dutch National Flag)",
+      "Arrays + Sorting"
+    ]
+  },
+  "Two Pointers": {
+    "core_concepts": [
+      "Pointer initialization at opposite ends or same direction.",
+      "Conditional movement logic based on comparison to target.",
+      "Fast & Slow pointers for cycle detection and midpoints."
+    ],
+    "recognition_cues": [
+      "Sorted input array requiring pair, triplet, or range search.",
+      "Need to optimize an O(N^2) search space down to O(N).",
+      "Symmetric checks, list partitioning, or in-place modifications."
+    ],
+    "common_combinations": [
+      "Two Pointers + Sorting",
+      "Two Pointers + Linked Lists (Middle Element, Cycle Detection)",
+      "Two Pointers + Strings (Palindrome Checks)"
+    ]
+  },
+  "Sliding Window": {
+    "core_concepts": [
+      "Window expansion (right pointer) & window contraction (left pointer).",
+      "State tracking inside the current window (e.g., via hash map, count, or sum)."
+    ],
+    "recognition_cues": [
+      "Problem asks for a contiguous subarray or substring (e.g., longest, shortest, or with specific constraints).",
+      "Keywords like 'subarray length K', 'distinct elements', 'at most K'."
+    ],
+    "common_combinations": [
+      "Sliding Window + Hashing (Distinct Characters)",
+      "Sliding Window + Monotonic Queue/Deque (Sliding Window Maximum)",
+      "Sliding Window + Two Pointers"
+    ]
+  },
+  "Linked Lists": {
+    "core_concepts": [
+      "Node structure (value & next pointer) with dynamic sizing.",
+      "Dummy nodes to simplify boundary operations.",
+      "Two-pointer techniques (middle of list, reversing in-place)."
+    ],
+    "recognition_cues": [
+      "Linear collections requiring constant time insertions/deletions.",
+      "Singly vs doubly linked lists, middle elements, or cycle detection.",
+      "Pointer manipulation, merging, or sorting without copying data."
+    ],
+    "common_combinations": [
+      "Linked Lists + Two Pointers (Cycle Detection, Reorder List)",
+      "Linked Lists + Recursion (Merge Lists)",
+      "Linked Lists + Stacks (Reverse Traversal)"
+    ]
+  },
+  "Stacks & Queues": {
+    "core_concepts": [
+      "LIFO (Last-In, First-Out) operations for Stack.",
+      "FIFO (First-In, First-Out) operations for Queue & Double-Ended Queue (Deque).",
+      "Monotonicity: maintaining elements in increasing or decreasing order."
+    ],
+    "recognition_cues": [
+      "Need to find the next/previous greater or smaller element (Monotonic Stack).",
+      "Balanced parentheses, expression parsing, or undo/redo simulations.",
+      "Level-order traversal (BFS) or window maintenance in sliding windows."
+    ],
+    "common_combinations": [
+      "Monotonic Stack + Prefix Sum (Largest Rectangle in Histogram)",
+      "Monotonic Queue + Sliding Window",
+      "Stack + Linked Lists / Graphs"
+    ]
+  },
+  "Binary Search": {
+    "core_concepts": [
+      "Search space definition with midpoint calculation.",
+      "Monotonic property enabling range elimination (discarding half of the search space).",
+      "Binary search on the answer (decision space)."
+    ],
+    "recognition_cues": [
+      "Sorted arrays or monotonic property (e.g., search element, first/last occurrence).",
+      "Time complexity target is O(log N).",
+      "Capacity, allocation, or scheduling problems where checking feasibility is O(N)."
+    ],
+    "common_combinations": [
+      "Binary Search + Greedy (Binary Search on Answer)",
+      "Binary Search + DP",
+      "Binary Search + Arrays"
+    ]
+  },
+  "Recursion & Divide and Conquer": {
+    "core_concepts": [
+      "Base case and recursive step with call stack execution.",
+      "Dividing the problem into smaller, independent subproblems and combining results."
+    ],
+    "recognition_cues": [
+      "Problem easily broken down into smaller, identical subproblems.",
+      "Implicit tree/graph structures, tree traversals, or Quick Select.",
+      "Divide-and-conquer logic (e.g., Merge Sort / Quick Sort)."
+    ],
+    "common_combinations": [
+      "Recursion + Trees (DFS)",
+      "Recursion + Dynamic Programming (Memoization)"
+    ]
+  },
+  "Trees": {
+    "core_concepts": [
+      "Hierarchical tree node relationships (parent, child, root, leaf).",
+      "Binary trees, Binary Search Trees (BST), and balanced trees.",
+      "Lowest Common Ancestor (LCA) and tree construction/serialization."
+    ],
+    "recognition_cues": [
+      "Parent-child dependencies, hierarchical structures, or BST ordering properties.",
+      "Need to calculate tree depth, balance, diameter, or path sums.",
+      "Level-order traversal (BFS) or depth-first traversals (DFS)."
+    ],
+    "common_combinations": [
+      "Trees + DFS/BFS (Diameter, Paths)",
+      "Trees + Dynamic Programming (Tree DP)",
+      "Trees + Recursion"
+    ]
+  },
+  "Tries & String Algorithms": {
+    "core_concepts": [
+      "Prefix trees (Tries) storing children character pointers and end-of-word flags.",
+      "Efficient string matching using KMP, Rabin-Karp, or Z-Algorithm.",
+      "Palindrome matching and string builder optimizations."
+    ],
+    "recognition_cues": [
+      "Large dictionary lookup, word auto-complete, or prefix searches.",
+      "Text processing, substring matching, or palindromic sequence checks.",
+      "Subsequence/substring requirements or rolling hashes."
+    ],
+    "common_combinations": [
+      "Trie + Bit Manipulation (Max XOR Pair)",
+      "Strings + Two Pointers (Palindrome Checks)",
+      "Strings + Hashing / Tries"
+    ]
+  },
+  "Heaps / Priority Queues": {
+    "core_concepts": [
+      "Min-Heap / Max-Heap properties and array-based binary tree structures.",
+      "O(1) retrieval of the minimum/maximum element.",
+      "Dynamic ordering of subset elements."
+    ],
+    "recognition_cues": [
+      "Need to repeatedly retrieve the minimum or maximum element under updates.",
+      "Keywords like 'Kth largest/smallest', 'Top K elements', 'Streaming median'.",
+      "Prioritized scheduling or K-way merges."
+    ],
+    "common_combinations": [
+      "Heaps + Sliding Window",
+      "Heaps + Greedy (Dijkstra's Algorithm)",
+      "Heaps + Arrays / Linked Lists"
+    ]
+  },
+  "Backtracking": {
+    "core_concepts": [
+      "Decision trees exploring path combinations.",
+      "Pruning invalid branches early to limit the search space.",
+      "Undo choice (backtrack step) in state recursion."
+    ],
+    "recognition_cues": [
+      "Requirement to find *all* possible solutions or combinations.",
+      "Combinatorics, subsets, permutations, or constraint satisfaction (N-Queens, Sudoku).",
+      "Grid traversal pathfinding."
+    ],
+    "common_combinations": [
+      "Backtracking + DFS",
+      "Backtracking + Tries (Word Search)"
+    ]
+  },
+  "Graphs": {
+    "core_concepts": [
+      "Vertices and edges mapped as Adjacency Matrix or Adjacency List.",
+      "Traversals (BFS, DFS, Multi-source BFS) and connected components.",
+      "Disjoint Set Union (DSU) and cycle detection."
+    ],
+    "recognition_cues": [
+      "Explicit nodes and relationships/edges (e.g. networks, dependencies).",
+      "Shortest path search (Dijkstra, Bellman-Ford, Floyd-Warshall).",
+      "Minimum Spanning Trees (Kruskal, Prim), topological ordering (Kahn's), or bipartite checks."
+    ],
+    "common_combinations": [
+      "Graphs + Heaps (Dijkstra)",
+      "Graphs + DFS/BFS (Islands)",
+      "Graphs + DSU (Redundant Connection)"
+    ]
+  },
+  "Dynamic Programming": {
+    "core_concepts": [
+      "Optimal substructure & overlapping subproblems.",
+      "State definitions and transition equations (top-down or bottom-up).",
+      "Memory optimizations (1D / 2D DP, Knapsack, LIS, LCS, Bitmask DP)."
+    ],
+    "recognition_cues": [
+      "Problem asks for the maximum, minimum, or count of combinations (e.g., 'number of ways').",
+      "Decisions at each step depend on previously computed subproblems.",
+      "State-based logic (e.g. Stock Buy/Sell with cooldown)."
+    ],
+    "common_combinations": [
+      "DP + Trees (Tree DP)",
+      "DP + Bitwise operations (Bitmask DP)",
+      "DP + Intervals (Interval DP)"
+    ]
+  },
+  "Greedy Algorithms": {
+    "core_concepts": [
+      "Local optimal choices leading to global optimal solutions.",
+      "Proof of correctness via Exchange Argument.",
+      "Greedy choices after sorting or using priority queues."
+    ],
+    "recognition_cues": [
+      "Interval scheduling, activity selection, or meeting rooms.",
+      "Minimum/Maximum constraints where local decisions are globally optimal.",
+      "Sorting or Heap prioritization is required first."
+    ],
+    "common_combinations": [
+      "Greedy + Sorting (Interval Scheduling)",
+      "Greedy + Heaps (Huffman Coding)",
+      "Greedy + Binary Search"
+    ]
+  },
+  "Bit Manipulation": {
+    "core_concepts": [
+      "Bitwise operators (AND, OR, XOR, NOT, Shifts).",
+      "Bit masks representing state space compression (sets).",
+      "XOR properties (e.g., A ^ A = 0, A ^ 0 = A)."
+    ],
+    "recognition_cues": [
+      "Small state space (e.g. up to 20 states/elements).",
+      "Numeric properties, counting set bits, or finding single/missing numbers.",
+      "Optimizing space by using integers as boolean sets."
+    ],
+    "common_combinations": [
+      "Bit Manipulation + Tries (XOR Trie)",
+      "Bit Manipulation + DP (Bitmask DP)",
+      "Bit Manipulation + Arrays"
+    ]
+  },
+  "Math & Geometry": {
+    "core_concepts": [
+      "Primes (Sieve of Eratosthenes) & Greatest Common Divisor (GCD).",
+      "Modular arithmetic, combinatorics (nCr), and fast exponentiation.",
+      "Coordinate systems, rotation (spiral matrix), and convex hulls."
+    ],
+    "recognition_cues": [
+      "Problem requires prime checks, division tricks, or modular calculations.",
+      "Combinatorics, permutations, or geometric calculations (e.g., rotation, distances).",
+      "O(log N) exponentiation or number theory properties."
+    ],
+    "common_combinations": [
+      "Math + Binary Search (Binary Search on Floating Point)",
+      "Math + Arrays / Bitwise operations"
+    ]
+  },
+  "Advanced Data Structures": {
+    "core_concepts": [
+      "Range query and point update structures (Segment Tree, Fenwick Tree).",
+      "Lazy propagation for range updates.",
+      "Range Minimum Query via Sparse Table."
+    ],
+    "recognition_cues": [
+      "Dynamic range operations: multiple range sum or min/max queries combined with range updates.",
+      "Keyword signals like 'point update', 'range update', or Eulerian paths."
+    ],
+    "common_combinations": [
+      "Segment Trees + Binary Search",
+      "Fenwick Trees + Line Sweep"
+    ]
+  }
+}

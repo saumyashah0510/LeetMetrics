@@ -42,3 +42,10 @@ export const getStudyPlan = (username) =>
 
 export const getContests = (username) =>
   api.get("/api/contests", { params: { username } });
+
+// Companies / Interview Prep
+export const getCompanies = () => api.get("/api/companies");
+export const getCompanyQuestions = (companyName, timeframe, username) =>
+  api.get(`/api/companies/${encodeURIComponent(companyName)}`, {
+    params: { timeframe, username }
+  });

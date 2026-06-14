@@ -57,5 +57,31 @@ async def run_tests():
         else:
             print(f"Error {resp.status_code}: {resp.text}")
 
+        print("\n[GET /api/companies]")
+        resp = await ac.get("/api/companies")
+        if resp.status_code == 200:
+            print(json.dumps(resp.json(), indent=2))
+        else:
+            print(f"Error {resp.status_code}: {resp.text}")
+
+        print(f"\n[GET /api/companies/Google?username={username}]")
+        resp = await ac.get(f"/api/companies/Google?username={username}&timeframe=6-months")
+        if resp.status_code == 200:
+            data = resp.json()
+            print(f"Company: {data.get('company_name')}, Timeframe: {data.get('timeframe')}")
+            print(f"Stats: {json.dumps(data.get('stats'), indent=2)}")
+            cats = data.get('categories', [])
+            print(f"Returned {len(cats)} categories.")
+            if len(cats) > 0:
+                print("First category sample:", cats[0].get("category"))
+                if len(cats[0].get("subtopics", [])) > 0:
+                    sub = cats[0]["subtopics"][0]
+                    print("  Subtopic sample:", sub.get("pattern"))
+                    if len(sub.get("questions", [])) > 0:
+                        print("    Question sample:", json.dumps(sub["questions"][0], indent=2))
+        else:
+            print(f"Error {resp.status_code}: {resp.text}")
+
 if __name__ == "__main__":
     asyncio.run(run_tests())
+

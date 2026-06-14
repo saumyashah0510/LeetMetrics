@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, text, distinct
 import collections
 from app.core.database import get_db
-from app.models.models import User, MasteryScore, DSACurriculum, Submission, Problem, ProblemCurriculumMapping
+from app.models.models import User, MasteryScore, DSACurriculum, Submission, Problem, ProblemCurriculumMapping, CompanyQuestion
 
 router = APIRouter()
 
@@ -330,6 +330,31 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         
     user_id = user.id
 
+    # Load mindmap details
+    import json
+    import os
+    mindmap_data = {}
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    try:
+        with open(os.path.join(base_dir, "data", "mindmap_details.json"), 'r') as f:
+            mindmap_data = json.load(f)
+    except Exception as e:
+        print(f"Warning: Failed to load mindmap_details.json: {e}")
+
+    # Fetch all company badges for timeframe 'six-months'
+    company_sql = text("""
+        SELECT problem_url_name, company_name, frequency_score
+        FROM company_questions
+        WHERE timeframe = 'six-months'
+    """)
+    company_res = await db.execute(company_sql)
+    companies_by_prob = collections.defaultdict(list)
+    for r in company_res.fetchall():
+        companies_by_prob[r.problem_url_name].append({
+            "name": r.company_name.capitalize(),
+            "frequency": r.frequency_score
+        })
+
     # 1. Fetch all solved problems by the user (with latest submission timestamp)
     solved_res = await db.execute(
         select(distinct(Submission.problem_url_name)).where(Submission.user_id == user_id)
@@ -381,10 +406,14 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         score = row.score if row.score is not None else 0
         
         if major not in hierarchy:
+            heuristics = mindmap_data.get(major, {})
             hierarchy[major] = {
                 "major_category": major,
                 "total_score": 0,
-                "subtopics": []
+                "subtopics": [],
+                "core_concepts": heuristics.get("core_concepts", []),
+                "recognition_cues": heuristics.get("recognition_cues", []),
+                "common_combinations": heuristics.get("common_combinations", [])
             }
             
         sub_probs = probs_by_curr.get(cid, [])
@@ -431,7 +460,8 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             "url_name": r.url_name,
             "difficulty": r.difficulty,
             "ac_rate": r.ac_rate,
-            "solved": r.url_name in solved_urls
+            "solved": r.url_name in solved_urls,
+            "companies": companies_by_prob.get(r.url_name, [])
         } for r in pool]
 
         # Format solved problems list (ordered by latest solve)
@@ -441,7 +471,8 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
             "url_name": p.url_name,
             "difficulty": p.difficulty,
             "ac_rate": p.ac_rate,
-            "solved_at": solved_timestamps.get(p.url_name).isoformat() if solved_timestamps.get(p.url_name) else None
+            "solved_at": solved_timestamps.get(p.url_name).isoformat() if solved_timestamps.get(p.url_name) else None,
+            "companies": companies_by_prob.get(p.url_name, [])
         } for p in solved_list]
         
         hierarchy[major]["subtopics"].append({
@@ -484,3 +515,129 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
         print(f"Warning: Redis write failed for curriculum cache: {e}")
         
     return curriculum_data
+
+
+@router.get("/companies")
+async def get_companies(db: AsyncSession = Depends(get_db)):
+    sql = text("""
+        SELECT company_name, COUNT(*) as q_count
+        FROM company_questions
+        GROUP BY company_name
+    """)
+    result = await db.execute(sql)
+    companies = []
+    for r in result.fetchall():
+        if r.company_name:
+            companies.append({
+                "name": r.company_name.capitalize(),
+                "count": r.q_count
+            })
+    companies.sort(key=lambda x: x["name"])
+    return companies
+
+
+@router.get("/companies/{company_name}")
+async def get_company_questions(
+    company_name: str,
+    timeframe: str = Query("6-months", pattern="^(30-days|3-months|6-months|all)$"),
+    username: str = Query(...),
+    db: AsyncSession = Depends(get_db)
+):
+    # Get user_id
+    user_id = await get_user_id(username, db)
+    
+    # Get solved problems for this user to mark solved status
+    solved_res = await db.execute(
+        text("SELECT DISTINCT problem_url_name FROM submissions WHERE user_id = :user_id"),
+        {"user_id": user_id}
+    )
+    solved_urls = {row[0] for row in solved_res.fetchall()}
+    
+    # Fetch questions for this company and timeframe mapped to curriculum
+    sql = text("""
+        SELECT 
+            p.frontend_id, p.title, p.url_name, p.difficulty, p.ac_rate,
+            cq.frequency_score, cq.importance_level,
+            COALESCE(dc.major_category, 'General') as major_category,
+            COALESCE(dc.sub_pattern, 'Uncategorized') as sub_pattern,
+            COALESCE(dc.id, 0) as curriculum_id
+        FROM company_questions cq
+        JOIN problems p ON cq.problem_url_name = p.url_name
+        LEFT JOIN problem_curriculum_mapping pcm ON p.url_name = pcm.problem_url_name
+        LEFT JOIN dsa_curriculum dc ON pcm.curriculum_id = dc.id
+        WHERE LOWER(cq.company_name) = :company_name AND cq.timeframe = :timeframe
+        ORDER BY cq.frequency_score DESC
+    """)
+    result = await db.execute(sql, {"company_name": company_name.lower(), "timeframe": timeframe})
+    rows = result.fetchall()
+    
+    # 1. Compute stats (deduplicated by url_name)
+    unique_probs = {}
+    for r in rows:
+        unique_probs[r.url_name] = {
+            "difficulty": r.difficulty,
+            "solved": r.url_name in solved_urls
+        }
+        
+    stats = {
+        "total": len(unique_probs),
+        "solved": sum(1 for p in unique_probs.values() if p["solved"]),
+        "by_difficulty": {
+            "Easy": {"total": 0, "solved": 0},
+            "Medium": {"total": 0, "solved": 0},
+            "Hard": {"total": 0, "solved": 0}
+        }
+    }
+    for p in unique_probs.values():
+        diff = p["difficulty"]
+        if diff in stats["by_difficulty"]:
+            stats["by_difficulty"][diff]["total"] += 1
+            if p["solved"]:
+                stats["by_difficulty"][diff]["solved"] += 1
+                
+    # 2. Group by Major Category and Subtopic
+    groups = collections.defaultdict(lambda: collections.defaultdict(list))
+    for r in rows:
+        q_data = {
+            "frontend_id": r.frontend_id,
+            "title": r.title,
+            "url_name": r.url_name,
+            "difficulty": r.difficulty,
+            "ac_rate": r.ac_rate,
+            "frequency": r.frequency_score,
+            "importance": r.importance_level,
+            "solved": r.url_name in solved_urls
+        }
+        groups[r.major_category][r.sub_pattern].append(q_data)
+        
+    # Format categories for response
+    categories_list = []
+    for major, subs in groups.items():
+        subtopics_list = []
+        for sub, q_list in subs.items():
+            # Deduplicate questions in same subtopic
+            seen = set()
+            dedup_q = []
+            for q in q_list:
+                if q["url_name"] not in seen:
+                    seen.add(q["url_name"])
+                    dedup_q.append(q)
+            subtopics_list.append({
+                "pattern": sub,
+                "questions": dedup_q
+            })
+            
+        categories_list.append({
+            "category": major,
+            "subtopics": subtopics_list
+        })
+        
+    # Sort categories alphabetically
+    categories_list.sort(key=lambda x: x["category"])
+    
+    return {
+        "company_name": company_name.capitalize(),
+        "timeframe": timeframe,
+        "stats": stats,
+        "categories": categories_list
+    }

@@ -5,6 +5,41 @@ import AppLayout from "../components/AppLayout";
 import { getCurriculum } from "../api";
 import { getUsername, masteryColor, difficultyColor, timeAgo } from "../utils";
 
+/* ─── Company Badge ────────────────────────────────────────────── */
+function CompanyBadge({ name, frequency }) {
+  const colors = {
+    Google: { bg: "bg-[#ea4335]/10", border: "border-[#ea4335]/20", text: "text-[#ea4335]" },
+    Meta: { bg: "bg-[#0668e1]/10", border: "border-[#0668e1]/20", text: "text-[#0668e1]" },
+    Amazon: { bg: "bg-[#ff9900]/10", border: "border-[#ff9900]/20", text: "text-[#ff9900]" },
+    Microsoft: { bg: "bg-[#00a4ef]/10", border: "border-[#00a4ef]/20", text: "text-[#00a4ef]" }
+  };
+  
+  let style = colors[name];
+  if (!style) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = Math.abs(hash) % 360;
+    style = {
+      bg: `rgba(0,0,0,0)`, // keep transparent and use style bg
+      border: `hsla(${h}, 70%, 55%, 0.25)`,
+      text: `hsla(${h}, 70%, 55%, 0.95)`,
+      customBg: `hsla(${h}, 70%, 55%, 0.1)`
+    };
+  }
+
+  return (
+    <span 
+      className={`px-1.5 py-0.5 rounded text-[10px] font-bold border transition-all hover:scale-105 ${style.bg || ""} ${style.border} ${style.text}`}
+      style={style.customBg ? { backgroundColor: style.customBg } : {}}
+      title={`${name} frequency: ${frequency.toFixed(1)}%`}
+    >
+      {name} {frequency > 0 ? `${Math.round(frequency)}%` : ""}
+    </span>
+  );
+}
+
 /* ─── Difficulty Badge ────────────────────────────────────────── */
 function DiffBadge({ diff }) {
   const color = difficultyColor(diff);
@@ -279,13 +314,22 @@ function SubtopicRow({ subtopic }) {
                         <span className="text-[#6b6b6b] text-[13px] font-mono w-6 shrink-0 text-right">
                           {rec.frontend_id}.
                         </span>
-                        <span
-                          className={`text-[14px] font-medium group-hover:text-[#ffa116] transition-colors truncate ${
-                            rec.solved ? "text-[#8c8c8c] line-through decoration-[#8c8c8c]/50" : "text-[#eff2f6]"
-                          }`}
-                        >
-                          {rec.title}
-                        </span>
+                        <div className="flex flex-col min-w-0">
+                          <span
+                            className={`text-[14px] font-medium group-hover:text-[#ffa116] transition-colors truncate ${
+                              rec.solved ? "text-[#8c8c8c] line-through decoration-[#8c8c8c]/50" : "text-[#eff2f6]"
+                            }`}
+                          >
+                            {rec.title}
+                          </span>
+                          {rec.companies && rec.companies.length > 0 && (
+                            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                              {rec.companies.map(c => (
+                                <CompanyBadge key={c.name} name={c.name} frequency={c.frequency} />
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                       <div className="flex items-center gap-5 shrink-0 pl-4">
                         <span className="text-[#aba9b0] text-[13px] tabular-nums bg-[#333333] px-2 py-0.5 rounded">
@@ -336,9 +380,18 @@ function SubtopicRow({ subtopic }) {
                           <span className="text-[#6b6b6b] text-[12px] font-mono w-6 shrink-0 text-right">
                             {prob.frontend_id}.
                           </span>
-                          <span className="text-[14px] font-medium text-[#eff2f6] group-hover:text-[#00b8a3] transition-colors truncate">
-                            {prob.title}
-                          </span>
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-[14px] font-medium text-[#eff2f6] group-hover:text-[#00b8a3] transition-colors truncate">
+                              {prob.title}
+                            </span>
+                            {prob.companies && prob.companies.length > 0 && (
+                              <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                                {prob.companies.map(c => (
+                                  <CompanyBadge key={c.name} name={c.name} frequency={c.frequency} />
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <div className="flex items-center gap-4 shrink-0 pl-4">
                           {prob.solved_at && (
@@ -430,6 +483,63 @@ export default function CategoryPage() {
               </div>
             ) : null}
           </div>
+
+          {/* Recognition & Strategy Guide (PDF Mind Map Insights) */}
+          {!isLoading && category && (category.recognition_cues?.length > 0 || category.core_concepts?.length > 0) && (
+            <div className="bg-[#282828]/30 border border-white/5 rounded-2xl p-6 backdrop-blur-xl flex flex-col gap-5">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#ffa116]/10 border border-[#ffa116]/20 flex items-center justify-center text-[#ffa116]">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm tracking-wide uppercase">Pattern Recognition Heuristics</h3>
+                  <p className="text-[#8c8c8c] text-xs">Interview strategies and cues mapped directly from the DSA pattern mind map.</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 text-[13px]">
+                {/* Core Concepts */}
+                {category.core_concepts?.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#ffa116] font-semibold tracking-wide uppercase text-[10px]">Core Concepts</span>
+                    <ul className="list-disc pl-4 space-y-1 text-[#eff2f6]/80 leading-relaxed">
+                      {category.core_concepts.map((concept, i) => (
+                        <li key={i}>{concept}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Recognition Cues */}
+                {category.recognition_cues?.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#ffa116] font-semibold tracking-wide uppercase text-[10px]">Recognition Cues</span>
+                    <ul className="list-disc pl-4 space-y-1 text-[#eff2f6]/80 leading-relaxed">
+                      {category.recognition_cues.map((cue, i) => (
+                        <li key={i}>{cue}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Common Combinations */}
+                {category.common_combinations?.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[#ffa116] font-semibold tracking-wide uppercase text-[10px]">Common Combinations</span>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {category.common_combinations.map((comb, i) => (
+                        <span key={i} className="px-2 py-1 rounded bg-[#1f1f1f] border border-[#3d3d3d]/50 text-[#aba9b0] text-[11px] font-medium leading-none">
+                          {comb}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Subtopics List */}
           {!isLoading && category && (
