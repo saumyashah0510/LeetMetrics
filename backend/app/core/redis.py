@@ -68,10 +68,11 @@ class RateLimiter:
                     detail="Rate limit exceeded. Maximum 5 sync requests per minute allowed."
                 )
 
-            # Increment count and set TTL on new keys
+            ttl = await redis.ttl(key)
+            # Increment count and set TTL on new keys or keys without a TTL
             async with redis.pipeline(transaction=True) as pipe:
                 await pipe.incr(key)
-                if not current:
+                if ttl < 0:
                     await pipe.expire(key, self.seconds)
                 await pipe.execute()
                 
