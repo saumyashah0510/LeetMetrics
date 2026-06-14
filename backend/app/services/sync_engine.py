@@ -321,7 +321,10 @@ class SyncEngine:
                     dashboard_key = f"dashboard:{self.username}"
                     curriculum_key = f"curriculum:{self.username}"
                     await redis.delete(dashboard_key, curriculum_key)
-                    print(f"Invalidated cache for key: {dashboard_key} and {curriculum_key}")
+                    # Dynamically clear all company question caches for this user
+                    async for key in redis.scan_iter(match=f"company_questions:{self.username}:*"):
+                        await redis.delete(key)
+                    print(f"Invalidated cache for user: {self.username}")
             except Exception as cache_err:
                 print(f"Warning: Failed to invalidate cache on success: {cache_err}")
                 

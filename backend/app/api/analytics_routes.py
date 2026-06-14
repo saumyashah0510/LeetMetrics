@@ -519,6 +519,18 @@ async def get_curriculum(username: str, db: AsyncSession = Depends(get_db)):
 
 @router.get("/companies")
 async def get_companies(db: AsyncSession = Depends(get_db)):
+    redis = None
+    try:
+        from app.core.redis import get_redis_client
+        import json
+        redis = get_redis_client()
+        if redis:
+            cached = await redis.get("companies:list")
+            if cached:
+                return json.loads(cached)
+    except Exception as e:
+        print(f"Warning: Redis read failed for companies list: {e}")
+
     sql = text("""
         SELECT company_name, COUNT(*) as q_count
         FROM company_questions
@@ -533,6 +545,13 @@ async def get_companies(db: AsyncSession = Depends(get_db)):
                 "count": r.q_count
             })
     companies.sort(key=lambda x: x["name"])
+
+    try:
+        if redis:
+            await redis.set("companies:list", json.dumps(companies), ex=3600)
+    except Exception as e:
+        print(f"Warning: Redis write failed for companies list: {e}")
+
     return companies
 
 
@@ -543,6 +562,18 @@ async def get_company_questions(
     username: str = Query(...),
     db: AsyncSession = Depends(get_db)
 ):
+    redis = None
+    try:
+        from app.core.redis import get_redis_client
+        import json
+        redis = get_redis_client()
+        if redis:
+            cached = await redis.get(f"company_questions:{username}:{company_name.lower()}:{timeframe}")
+            if cached:
+                return json.loads(cached)
+    except Exception as e:
+        print(f"Warning: Redis read failed for company questions: {e}")
+
     # Get user_id
     user_id = await get_user_id(username, db)
     
@@ -635,9 +666,17 @@ async def get_company_questions(
     # Sort categories alphabetically
     categories_list.sort(key=lambda x: x["category"])
     
-    return {
+    response_data = {
         "company_name": company_name.capitalize(),
         "timeframe": timeframe,
         "stats": stats,
         "categories": categories_list
     }
+
+    try:
+        if redis:
+            await redis.set(f"company_questions:{username}:{company_name.lower()}:{timeframe}", json.dumps(response_data), ex=300)
+    except Exception as e:
+        print(f"Warning: Redis write failed for company questions: {e}")
+        
+    return response_data

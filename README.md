@@ -38,6 +38,7 @@
 - [Architecture](#-system-architecture)
 - [Features](#-core-features)
 - [Analytics Engine](#-analytics-engine)
+- [Company Interview Prep & Mind Map Heuristics](#-company-interview-prep--mind-map-heuristics)
 - [Performance & Concurrency Optimizations](#-performance--concurrency-optimizations)
 - [Load Testing with Locust](#-load-testing-with-locust)
 - [Security & Privacy](#-security--privacy)
@@ -117,6 +118,24 @@ The backend `AnalyticsEngine` computes a definitive 0-100 Mastery Score for ever
 
 ---
 
+## 🎯 Company Interview Prep & Mind Map Heuristics
+
+LeetMetrics features a dedicated **Company Interview Preparation** dashboard where users can filter the most frequent and important LeetCode questions by company, timeframe (30 days, 3 months, 6 months), and DSA curriculum category.
+
+### 1. Data Pipeline & Bulk Seeding
+- **CSV Data Ingestion:** A bulk seeding script ([seed_company_questions.py](backend/seed_company_questions.py)) fetches raw question mapping CSVs for **218 active companies** from GitHub.
+- **High Concurrency & Connection Safety:** The pipeline downloads all CSV texts concurrently using an HTTPX client with a semaphore of 50 connections, and commits the records sequentially in a single DB transaction. This prevents SQLAlchemy connection pool exhaustion and database locks.
+- **LeetCode GraphQL Safety:** The parser creates missing `Problem` rows directly from CSV column metadata (Frontend ID, Title, Difficulty, Acceptance Rate), avoiding GraphQL rate blocks or IP bans.
+- **Frequency-Based Tagging:** Mapped problems are dynamically tagged as `Most Frequent` (>= 50%), `Important` (>= 30%), or `Regular` (< 30%) for clean badging.
+
+### 2. Searchable Autocomplete Dropdown Selector
+- **Grid vs. Dropdown Split:** 8 high-volume targets (Google, Meta, Amazon, Microsoft, Apple, Netflix, Uber, Bloomberg) are highlighted at the top as card targets.
+- **Smart Search Input:** The remaining 210+ companies are accessed via a searchable autocompleting dropdown filter to avoid clutter.
+- **A-Z vs. Most Important Sorting:** Users can toggle sorting the list of companies alphabetically or by **Most Important** (ranked by actual question counts in the database).
+- **Hashed Initial Badges:** Hashed HSL dynamic color initial badges are generated automatically for non-featured targets, fitting the visual style of brand logos.
+
+---
+
 ## ⚡ Performance & Concurrency Optimizations
 
 To handle high user traffic and protect database resources under heavy concurrency, we implemented several performance and safety mechanisms, verified via high-load benchmarking (50 concurrent users):
@@ -134,8 +153,11 @@ To handle high user traffic and protect database resources under heavy concurren
 - **Data Consistency:** This completely prevents race conditions, eliminating duplicate submission entries and database connection pool starvation.
 
 ### 3. Redis Caching & Invalidation (Up to 67x Speedup)
-- **Caching Mechanism:** `/api/dashboard` and `/api/curriculum` responses are cached in Redis with a 5-minute (300s) TTL.
-- **On-Demand Invalidation:** As soon as a user finishes syncing their LeetCode submissions, their Redis cache is cleared so that the next request retrieves fresh stats.
+- **Caching Mechanism:** 
+  - `/api/dashboard` and `/api/curriculum` responses are cached in Redis with a 5-minute (300s) TTL.
+  - `/api/companies` (list of companies and question counts) is cached in Redis under the key `companies:list` for 1 hour (3600s).
+  - `/api/companies/{company_name}` (company question status pages) is cached in Redis under keys matching `company_questions:{username}:{company}:{timeframe}` for 5 minutes (300s).
+- **On-Demand Invalidation:** As soon as a user finishes syncing their LeetCode submissions, their dashboard, curriculum, and all custom `company_questions:{username}:*` Redis cache entries are cleared (using an asynchronous Redis `scan_iter` sweep) so that the next requests retrieve fresh stats.
 - **Benchmark Results (Under 50 Concurrent Users Load):**
 
 | Endpoint | Cache Miss (DB Hit) | Cache Hit (Redis Median) | Latency Reduction | Speedup Factor |
