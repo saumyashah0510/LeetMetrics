@@ -19,7 +19,6 @@ export default function WakeupLoader({ children }) {
   const [fadeAway, setFadeAway] = useState(false);
   const [progress, setProgress] = useState(0);
   const [tipIndex, setTipIndex] = useState(0);
-  const [errorCount, setErrorCount] = useState(0);
 
   // 1. Fake progressive loader bar
   useEffect(() => {
@@ -70,7 +69,6 @@ export default function WakeupLoader({ children }) {
       } catch (err) {
         if (isActive) {
           failCount++;
-          setErrorCount(failCount);
           // Retry every 2.5 seconds
           setTimeout(ping, 2500);
         }
@@ -141,12 +139,6 @@ export default function WakeupLoader({ children }) {
           </div>
         </div>
 
-        {/* Connection status indicator */}
-        {errorCount > 0 && !isAwake && (
-          <div className="text-[10px] text-[#ffa116]/60 font-medium font-mono border border-[#ffa116]/10 bg-[#ffa116]/5 px-3 py-1.5 rounded-full animate-fade-in">
-            Failed attempts: {errorCount} • Retrying...
-          </div>
-        )}
       </div>
     </div>
   );
