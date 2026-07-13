@@ -9,6 +9,7 @@ import MasteryPage from "./pages/MasteryPage";
 import InterviewPage from "./pages/InterviewPage";
 import CustomCursor from "./components/CustomCursor";
 import AppLayout from "./components/AppLayout";
+import WakeupLoader from "./components/WakeupLoader";
 
 // Placeholder — will be replaced page by page
 const Placeholder = ({ name }) => (
@@ -30,18 +31,20 @@ const Placeholder = ({ name }) => (
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <CustomCursor />
-      <Routes>
-        <Route path="/"          element={<LandingPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/mastery"   element={<MasteryPage />} />
-        <Route path="/topics"    element={<TopicsPage />} />
-        <Route path="/topics/:categoryId" element={<CategoryPage />} />
-        <Route path="/interview" element={<InterviewPage />} />
-        <Route path="/contests"  element={<ContestsPage />} />
-        <Route path="*"          element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <WakeupLoader>
+      <BrowserRouter>
+        <CustomCursor />
+        <Routes>
+          <Route path="/"          element={<LandingPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/mastery"   element={<MasteryPage />} />
+          <Route path="/topics"    element={<TopicsPage />} />
+          <Route path="/topics/:categoryId" element={<CategoryPage />} />
+          <Route path="/interview" element={<InterviewPage />} />
+          <Route path="/contests"  element={<ContestsPage />} />
+          <Route path="*"          element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </WakeupLoader>
   );
 }
