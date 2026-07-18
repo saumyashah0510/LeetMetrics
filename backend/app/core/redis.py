@@ -3,6 +3,8 @@ from app.core.config import settings
 from fastapi import Request, HTTPException
 import logging
 import json
+import time
+import uuid
 
 logger = logging.getLogger("app.redis")
 
@@ -58,22 +60,30 @@ class RateLimiter:
             logger.debug(f"RateLimiter body parsing skipped/failed: {e}")
 
         key = f"rate_limit:{identifier}"
+        now = time.time()
+        clear_before = now - self.seconds
 
         try:
-            current = await redis.get(key)
-            if current and int(current) >= self.times:
+            # 1. Clean old requests and get the current active request count
+            async with redis.pipeline(transaction=True) as pipe:
+                await pipe.zremrangebyscore(key, "-inf", clear_before)
+                await pipe.zcard(key)
+                results = await pipe.execute()
+            
+            current_count = results[1]
+
+            if current_count >= self.times:
                 logger.warning(f"Rate limit hit for key: {key}")
                 raise HTTPException(
                     status_code=429, 
                     detail="Rate limit exceeded. Maximum 5 sync requests per minute allowed."
                 )
 
-            ttl = await redis.ttl(key)
-            # Increment count and set TTL on new keys or keys without a TTL
+            # 2. Add current request as a unique member in the ZSET
+            member = f"{now}-{uuid.uuid4()}"
             async with redis.pipeline(transaction=True) as pipe:
-                await pipe.incr(key)
-                if ttl < 0:
-                    await pipe.expire(key, self.seconds)
+                await pipe.zadd(key, {member: now})
+                await pipe.expire(key, int(self.seconds))
                 await pipe.execute()
                 
         except HTTPException:
@@ -82,3 +92,4 @@ class RateLimiter:
             # Fail-open: if Redis connection fails, allow requests through
             logger.error(f"Redis RateLimiter error (failing open): {e}")
             return
+
